@@ -1,5 +1,5 @@
 
-//  Stores money that has been locked after approval.
+//  Stores money that has been ged after approval.
 //  Tracks when each category can be released.
 
 
@@ -43,49 +43,53 @@ const lockedBudgetSchema = new mongoose.Schema({
     },
 
 
-    // Individual release schedules
-    releases:[
+// Individual money release schedules
+releases:[
 
-        {
+    {
 
-            category:{
+        // Budget category
+        category:{
 
-                type:String,
+            type:String,
 
-                required:true
+            required:true
 
-            },
-
-
-            amount:{
-
-                type:Number,
-
-                required:true
-
-            },
+        },
 
 
-            releaseDate:{
+        // Amount to release
+        amount:{
 
-                type:Date,
+            type:Number,
 
-                required:true
+            required:true
 
-            },
+        },
 
 
-            released:{
+        // User decides this date
+        releaseDate:{
 
-                type:Boolean,
+            type:Date,
 
-                default:false
+            required:true
 
-            }
+        },
+
+
+        // Has this money been released?
+        released:{
+
+            type:Boolean,
+
+            default:false
 
         }
 
-    ]
+    }
+
+]
 
 
 },
