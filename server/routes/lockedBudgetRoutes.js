@@ -30,7 +30,7 @@ require("../controllers/lockedBudgetViewController");
 
 
 // Lock an approved budget
-// POST /api/locked-budget/:id/lock
+
 
 
 router.post(
