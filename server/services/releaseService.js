@@ -13,13 +13,15 @@ const LockedBudget = require("../models/LockedBudget");
 
 
 //  Start Daily Release Checker
+ console.log("Release Service Started");
 
 exports.startReleaseService = () => {
 
     // Every day at midnight
     cron.schedule(
 
-        "0 0 * * *",
+        //  "*/10 * * * * *", //  for testing every 10 seconds
+        "0 0 * * *", //  every day at midnight
 
         async () => {
 
@@ -44,7 +46,10 @@ exports.startReleaseService = () => {
                 // Find every locked budget
                 const lockedBudgets =
                     await LockedBudget.find();
-
+                console.log(
+                                "Locked budgets found:",
+                                lockedBudgets.length
+                            );
 
                 // Loop through each budget
                 for (const budget of lockedBudgets) {
