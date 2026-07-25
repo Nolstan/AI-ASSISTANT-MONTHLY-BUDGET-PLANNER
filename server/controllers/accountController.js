@@ -142,3 +142,170 @@ exports.withdrawMoney = async(req,res)=>{
 
 
 };
+
+
+
+
+// This fuctions calculates
+
+//  Locked money
+//  Available money
+//  Withdrawn money
+
+
+exports.getBalance = async (req, res) => {
+
+    try {
+
+
+        const LockedBudget =
+        require("../models/LockedBudget");
+
+
+        const lockedBudget =
+        await LockedBudget.findOne({
+
+            user:req.user.id
+
+        });
+
+
+
+        if(!lockedBudget){
+
+            return res.status(404).json({
+
+                message:
+                "No locked budget found"
+
+            });
+
+        }
+
+
+
+        let lockedMoney = 0;
+
+        let availableMoney = 0;
+
+        let withdrawnMoney = 0;
+
+
+
+        lockedBudget.releases.forEach(
+
+            release => {
+
+
+                const remaining =
+                release.amount -
+                release.withdrawnAmount;
+
+
+
+                if(release.released){
+
+                    availableMoney += remaining;
+
+                }
+
+                else{
+
+                    lockedMoney += release.amount;
+
+                }
+
+
+                withdrawnMoney +=
+                release.withdrawnAmount;
+
+
+            }
+
+        );
+
+
+
+        res.json({
+
+            lockedMoney,
+
+            availableMoney,
+
+            withdrawnMoney
+
+        });
+
+
+    }
+
+    catch(error){
+
+
+        res.status(500).json({
+
+            message:error.message
+
+        });
+
+
+    }
+
+};
+
+
+
+
+
+
+//  Get transaction history
+ 
+
+exports.getTransactions = async(req,res)=>{
+
+
+    try {
+
+
+        const Transaction =
+        require("../models/Transaction");
+
+
+
+        const transactions =
+        await Transaction.find({
+
+            user:req.user.id
+
+        })
+        .sort({
+
+            createdAt:-1
+
+        });
+
+
+
+        res.json({
+
+            transactions
+
+        });
+
+
+    }
+
+    catch(error){
+
+
+        res.status(500).json({
+
+            message:error.message
+
+        });
+
+
+    }
+
+
+};
