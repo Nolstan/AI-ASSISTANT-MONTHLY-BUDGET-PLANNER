@@ -79,8 +79,20 @@ Format:
 
         });
 
-    return JSON.parse(
-        completion.choices[0].message.content
-    );
+        // Get the AI response
+        let content = completion.choices[0].message.content.trim();
 
-};
+        // Remove Markdown code fences if they exist
+        content = content
+            .replace(/^```json\s*/i, "")
+            .replace(/^```\s*/i, "")
+            .replace(/\s*```$/, "");
+
+
+            console.log("RAW AI RESPONSE FOR DEBUGGING");
+            console.log(content);
+
+        // Convert JSON string into a JavaScript object
+        return JSON.parse(content);
+
+        };
