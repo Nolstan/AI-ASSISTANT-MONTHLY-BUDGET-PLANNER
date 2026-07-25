@@ -1,132 +1,88 @@
-
-
-//  Stores a user's monthly budget.
-
-//  The budget contains:
-//  Total monthly amount
-// Planned expenses
-//  AI generated plan later
-//  Approval status later
- 
- 
-
 const mongoose = require("mongoose");
 
 
+const budgetItemSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+            trim: true
+        },
+
+        amount: {
+            type: Number,
+            required: true,
+            min: 0
+        },
+
+        priority: {
+            type: String,
+            enum: ["Essential", "Important", "Optional"],
+            default: "Important"
+        }
+    },
+    { _id: false }
+);
 
 const budgetSchema = new mongoose.Schema(
-
     {
 
-
-        // Owner of this budget
+        // Budget owner
         user: {
-
             type: mongoose.Schema.Types.ObjectId,
-
             ref: "User",
-
-            required:true
-
+            required: true
         },
 
-
-        // The total amount the user plans to spend
+        // Total monthly budget
         monthlyAmount: {
+            type: Number,
+            required: true,
+            min: 0
+        },
 
-            type:Number,
+       
+        //  Original budget entered by the user.
+        //  Never changes.
+         
+        expenses: [budgetItemSchema],
 
-            required:true
+        
+        //   AI's recommendations.
+        //   Never changes after generation.
+         
+        aiPlan: {
+
+            summary: String,
+
+            improvements: [String],
+
+            recommendedBudget: [budgetItemSchema],
+
+            tips: [String]
 
         },
 
+//    users final edited budget after reviewing AIs recommendations.
+        finalPlan: [budgetItemSchema],
 
-        // User's original spending ideas
-        expenses:[
-
-            {
-
-                name:{
-
-                    type:String,
-
-                    required:true
-
-                },
-
-
-                amount:{
-
-                    type:Number,
-
-                    required:true
-
-                },
-
-
-                priority:{
-
-                    type:String,
-
-                    enum:[
-                        "Essential",
-                        "Important",
-                        "Optional"
-                    ],
-
-                    default:"Important"
-
-                }
-
-            }
-
-        ],
-
-
-        // AI response will be stored here later
-aiPlan: {
-    summary: String,
-    improvements: [String],
-    recommendedBudget: [
-        {
-            name: String,
-            amount: Number,
-            priority: String
-        }
-    ],
-    tips: [String]
-},
-
-
-        // Budget lifecycle
-        status:{
-
-            type:String,
-
-            enum:[
-
+        
+        //  Budget status.
+         
+        status: {
+            type: String,
+            enum: [
                 "draft",
                 "approved",
                 "locked"
-
             ],
-
-            default:"draft"
-
+            default: "draft"
         }
 
-
     },
-
     {
-        timestamps:true
+        timestamps: true
     }
-
 );
 
-
-
-module.exports = mongoose.model(
-    "Budget",
-    budgetSchema
-);
+module.exports = mongoose.model("Budget", budgetSchema);
