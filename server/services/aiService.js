@@ -100,7 +100,59 @@ Format:
             console.log("RAW AI RESPONSE FOR DEBUGGING");
             console.log(content);
 
-        // Convert JSON string into a JavaScript object
-        return JSON.parse(content);
+       // Convert JSON string into JavaScript object
+const aiPlan = JSON.parse(content);
+
+
+// Validate and automatically correct AI budget totals
+
+
+const total = aiPlan.recommendedBudget.reduce(
+    (sum, item) => sum + item.amount,
+    0
+);
+
+
+// Calculate difference between required budget and AI budget
+const difference = budget.monthlyAmount - total;
+
+
+// If AI did not allocate the full budget
+if (difference !== 0) {
+
+
+    // Find savings category
+    const savings = aiPlan.recommendedBudget.find(
+        item =>
+            item.name.toLowerCase() === "savings"
+    );
+
+
+    if (savings) {
+
+        // Add remaining money to savings
+        savings.amount += difference;
+
+    } else {
+
+        // If AI forgot savings completely,
+        // create a savings category
+        aiPlan.recommendedBudget.push({
+
+            name: "Savings",
+
+            amount: difference,
+
+            priority: "Important"
+
+        });
+
+    }
+
+}
+
+
+// Return corrected AI plan
+return aiPlan;
 
         };
