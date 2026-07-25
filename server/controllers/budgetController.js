@@ -278,7 +278,11 @@ exports.approveBudget = async (req, res) => {
             });
 
         }
-
+      // Save user's final approved budget
+            budget.finalPlan =
+                JSON.parse(
+                    JSON.stringify(budget.aiPlan.recommendedBudget)
+                );
 
         // Approve budget
         budget.status = "approved";
