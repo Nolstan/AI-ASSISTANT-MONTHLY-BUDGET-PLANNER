@@ -33,6 +33,11 @@ app.use(
     authRoutes
 );
 
-
+// connect budget routes 
+const budgetRoutes = require("./routes/budgetRoutes");
+app.use(
+    "/api/budget",
+    budgetRoutes
+);
 
 module.exports = app;
