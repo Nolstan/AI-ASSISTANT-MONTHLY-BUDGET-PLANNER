@@ -40,4 +40,8 @@ app.use(
     budgetRoutes
 );
 
+// connect ai routes
+const aiRoutes = require("./routes/aiRoutes");
+app.use("/api/ai", aiRoutes);
+
 module.exports = app;
