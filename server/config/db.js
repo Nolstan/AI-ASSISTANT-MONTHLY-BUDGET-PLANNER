@@ -1,6 +1,6 @@
 
 // This is a MongoDB connection configuration file. 
-// It uses Mongoose to connect to the MongoDB database specified in the environment variables.
+// It uses Mongoose to connect to the MongoDB database 
 
 
 const mongoose = require("mongoose");
@@ -16,7 +16,7 @@ const connectDB = async () => {
 
         console.error("MongoDB Connection Failed");
         console.error(error.message);
-        
+
         //   it will exit the process with failure 
         process.exit(1);
     }
