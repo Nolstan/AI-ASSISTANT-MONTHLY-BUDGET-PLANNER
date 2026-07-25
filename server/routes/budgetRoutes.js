@@ -19,7 +19,9 @@ const {
 
     getBudgets,
 
-    updateBudgetPlan
+    updateBudgetPlan,
+
+    approveBudget
 
 } = require("../controllers/budgetController");
 
@@ -59,4 +61,16 @@ router.put(
     updateBudgetPlan
 );
 
+
+// Approve budget
+
+router.post(
+
+    "/:id/approve",
+
+    auth,
+
+    approveBudget
+
+);
 module.exports = router;
