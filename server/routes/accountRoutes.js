@@ -7,17 +7,21 @@ const express = require("express");
 const router = express.Router();
 
 
+
 const auth =
 require("../middleware/authMiddleware");
 
 
 const {
 
-    withdrawMoney
+    withdrawMoney,
+
+    getBalance,
+
+    getTransactions
 
 }
-=
-require("../controllers/accountController");
+= require("../controllers/accountController");
 
 
 
@@ -30,6 +34,34 @@ router.post(
     auth,
 
     withdrawMoney
+
+);
+
+
+
+// Get account balance
+
+router.get(
+
+    "/balance",
+
+    auth,
+
+    getBalance
+
+);
+
+
+
+// Get transaction history
+
+router.get(
+
+    "/transactions",
+
+    auth,
+
+    getTransactions
 
 );
 
