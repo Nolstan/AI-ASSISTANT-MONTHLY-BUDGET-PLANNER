@@ -17,10 +17,11 @@ const {
 
     createBudget,
 
-    getBudgets
+    getBudgets,
+
+    updateBudgetPlan
 
 } = require("../controllers/budgetController");
-
 
 
 
@@ -50,6 +51,12 @@ router.get(
 
 );
 
+// for modifying the budget plan
+router.put(
 
+    "/:id",
+    auth,
+    updateBudgetPlan
+);
 
 module.exports = router;
