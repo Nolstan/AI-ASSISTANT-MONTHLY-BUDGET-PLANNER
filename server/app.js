@@ -1,39 +1,38 @@
-/**
- * -----------------------------------------------------
- * app.js
- * -----------------------------------------------------
- * Creates and configures the Express application.
- *
- * This file DOES NOT start the server.
- * It only prepares the app and exports it.
- * -----------------------------------------------------
- */
+// This file Connect Routes 
 
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
 
-/**
- * Allow requests from our frontend.
- */
+
+//   Allow requests from our frontend.
+
 app.use(cors());
 
-/**
- * Read JSON data sent by the client.
- */
+
+// Read JSON data sent by the client.
+
 app.use(express.json());
 
-/**
- * Temporary test route.
- * Visiting http://localhost:5000/
- * should display this message.
- */
+
+//   Temporary test route.
+
+
 app.get("/", (req, res) => {
     res.json({
         success: true,
         message: "AI Monthly Budget Planner API is running."
     });
 });
+
+// connect auth routes to the application
+const authRoutes = require("./routes/authRoutes");
+app.use(
+    "/api/auth",
+    authRoutes
+);
+
+
 
 module.exports = app;

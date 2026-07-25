@@ -1,7 +1,7 @@
 
 //  Handles:
 //  Registering users
-//  Logging users in
+//  Logging users in .
 
 
 
