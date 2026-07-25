@@ -3,20 +3,10 @@
 //  The users money is divided into scheduled releases and ofcourse with a cronjob.
  
 
-
-const Budget = require("../models/Budget");
-
-const LockedBudget = require("../models/LockedBudget");
-
-
-
 exports.lockBudget = async (req, res) => {
-
 
     try {
 
-
-        // Find user's approved budget
         const budget = await Budget.findOne({
 
             _id:req.params.id,
@@ -24,7 +14,6 @@ exports.lockBudget = async (req, res) => {
             user:req.user.id
 
         });
-
 
 
         if(!budget){
@@ -38,11 +27,7 @@ exports.lockBudget = async (req, res) => {
         }
 
 
-
-        // Only approved budgets can be locked
-
         if(budget.status !== "approved"){
-
 
             return res.status(400).json({
 
@@ -51,12 +36,8 @@ exports.lockBudget = async (req, res) => {
 
             });
 
-
         }
 
-
-
-        // Make sure final plan exists
 
         if(
             !budget.finalPlan ||
@@ -74,25 +55,15 @@ exports.lockBudget = async (req, res) => {
 
 
 
-
-     
-        // Generate release schedule
-
-        // For now we create a simple schedule:
-        // Each category gets a release date.
-        // Later will make this smarter with AI.
-
-
-
- // User provides the release schedule
-
+       
+        
+        // Get user release schedule
+        
         const {
             releases
         } = req.body;
 
 
-
-        // Check that schedule exists
 
         if(
             !releases ||
@@ -110,6 +81,38 @@ exports.lockBudget = async (req, res) => {
 
 
 
+        
+        // Validate release amounts
+        
+
+        const releaseTotal =
+        releases.reduce(
+
+            (sum,item)=>
+            sum + item.amount,
+
+            0
+
+        );
+
+
+        if(releaseTotal !== budget.monthlyAmount){
+
+            return res.status(400).json({
+
+                message:
+                "Release amounts must equal approved budget"
+
+            });
+
+        }
+
+
+
+       
+        // Create locked budget
+       
+
         const lockedBudget =
         await LockedBudget.create({
 
@@ -126,8 +129,6 @@ exports.lockBudget = async (req, res) => {
 
 
 
-        // Update budget status
-
         budget.status = "locked";
 
 
@@ -140,18 +141,15 @@ exports.lockBudget = async (req, res) => {
             message:
             "Budget locked successfully",
 
-
             lockedBudget
 
         });
 
 
 
-    }catch(error){
-
+    } catch(error){
 
         console.error(error);
-
 
         res.status(500).json({
 
@@ -159,8 +157,6 @@ exports.lockBudget = async (req, res) => {
 
         });
 
-
     }
-
 
 };
