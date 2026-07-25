@@ -51,4 +51,14 @@ app.use(
     "/api/locked-budget",
     lockedBudgetRoutes
 );
+
+// connect account routes
+const accountRoutes =
+require("./routes/accountRoutes");
+app.use(
+    "/api/account",
+    accountRoutes
+);
+
+
 module.exports = app;
