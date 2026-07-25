@@ -42,7 +42,6 @@ const lockedBudgetSchema = new mongoose.Schema({
 
     },
 
-
 // Individual money release schedules
 releases:[
 
@@ -84,6 +83,16 @@ releases:[
             type:Boolean,
 
             default:false
+
+        },
+
+
+        // Amount already withdrawn by user
+        withdrawnAmount:{
+
+            type:Number,
+
+            default:0
 
         }
 
