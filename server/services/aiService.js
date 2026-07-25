@@ -35,19 +35,28 @@ Your task:
 3. Recommend a healthier allocation.
 4. Encourage saving money.
 
-IMPORTANT:
 
-Return ONLY valid JSON.
+IMPORTANT RULES:
+
+1. The sum of every amount inside recommendedBudget MUST equal exactly MWK ${budget.monthlyAmount}.
+
+2. Never exceed the monthly budget.
+
+3. Never leave any money unallocated.
+
+4. If money remains after essential expenses, allocate the remainder to Savings.
+
+5. Every amount must be a whole number.
+
+6. Return ONLY valid JSON.
 
 Format:
 
 {
     "summary":"",
-
     "improvements":[
         ""
     ],
-
     "recommendedBudget":[
         {
             "name":"",
@@ -55,7 +64,6 @@ Format:
             "priority":""
         }
     ],
-
     "tips":[
         ""
     ]
