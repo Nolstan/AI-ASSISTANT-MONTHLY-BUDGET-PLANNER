@@ -1,11 +1,8 @@
-// this file holds the routes for locked budgets.
-
-
+// This file holds the routes for locked budgets.
 
 const express = require("express");
 
 const router = express.Router();
-
 
 const auth =
 require("../middleware/authMiddleware");
@@ -18,8 +15,23 @@ const {
 require("../controllers/lockedBudgetController");
 
 
+const {
 
-// Lock approved budget
+    getLockedBudget,
+
+    getAvailableMoney,
+
+    getUpcomingReleases
+
+}
+=
+require("../controllers/lockedBudgetViewController");
+
+
+
+// Lock an approved budget
+// POST /api/locked-budget/:id/lock
+
 
 router.post(
 
@@ -28,6 +40,54 @@ router.post(
     auth,
 
     lockBudget
+
+);
+
+
+
+
+// View users locked budget
+
+
+router.get(
+
+    "/",
+
+    auth,
+
+    getLockedBudget
+
+);
+
+
+
+
+// View released money
+
+
+router.get(
+
+    "/available",
+
+    auth,
+
+    getAvailableMoney
+
+);
+
+
+
+
+// View upcoming releases
+
+
+router.get(
+
+    "/upcoming",
+
+    auth,
+
+    getUpcomingReleases
 
 );
 
