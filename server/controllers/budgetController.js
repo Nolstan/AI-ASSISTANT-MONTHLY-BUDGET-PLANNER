@@ -205,3 +205,114 @@ exports.updateBudgetPlan = async (req, res) => {
     }
 
 };
+
+
+
+
+//  Approve Budget
+ 
+// User confirms the final AI budget.
+//  Changes status from draft  approved.
+
+
+exports.approveBudget = async (req, res) => {
+
+    try {
+
+        const budget = await Budget.findOne({
+
+            _id: req.params.id,
+
+            user: req.user.id
+
+        });
+
+
+        if (!budget) {
+
+            return res.status(404).json({
+
+                message: "Budget not found"
+
+            });
+
+        }
+
+
+        // User cannot approve an empty AI plan
+        if (
+            !budget.aiPlan ||
+            !budget.aiPlan.recommendedBudget ||
+            budget.aiPlan.recommendedBudget.length === 0
+        ) {
+
+            return res.status(400).json({
+
+                message:
+                "Generate and review an AI budget before approval"
+
+            });
+
+        }
+
+
+        // Verify total one more time before approval
+        const total =
+            budget.aiPlan.recommendedBudget.reduce(
+
+                (sum, item) =>
+                sum + item.amount,
+
+                0
+
+            );
+
+
+        if (total !== budget.monthlyAmount) {
+
+            return res.status(400).json({
+
+                message:
+                "Budget total does not match monthly amount"
+
+            });
+
+        }
+
+
+        // Approve budget
+        budget.status = "approved";
+
+
+        await budget.save();
+
+
+        res.json({
+
+            message:
+            "Budget approved successfully",
+
+            status:
+            budget.status,
+
+            budget
+
+        });
+
+
+    } catch(error) {
+
+
+        console.error(error);
+
+
+        res.status(500).json({
+
+            message:error.message
+
+        });
+
+
+    }
+
+};
