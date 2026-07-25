@@ -33,7 +33,8 @@ Your task:
 1. Review the budget.
 2. Suggest improvements.
 3. Recommend a healthier allocation.
-4. Encourage saving money.
+4. Do not include exact remaining balances or totals in the summary.
+   The backend will calculate and validate all financial totals.
 
 
 IMPORTANT RULES:
