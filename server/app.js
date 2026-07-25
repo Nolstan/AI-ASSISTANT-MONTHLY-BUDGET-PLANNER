@@ -44,4 +44,11 @@ app.use(
 const aiRoutes = require("./routes/aiRoutes");
 app.use("/api/ai", aiRoutes);
 
+// connect locked budget routes
+const lockedBudgetRoutes =
+require("./routes/lockedBudgetRoutes");
+app.use(
+    "/api/locked-budget",
+    lockedBudgetRoutes
+);
 module.exports = app;
