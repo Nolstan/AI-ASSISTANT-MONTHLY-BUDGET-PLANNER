@@ -84,13 +84,18 @@ const budgetSchema = new mongoose.Schema(
 
 
         // AI response will be stored here later
-        aiPlan:{
-
-            type:Object,
-
-            default:null
-
-        },
+aiPlan: {
+    summary: String,
+    improvements: [String],
+    recommendedBudget: [
+        {
+            name: String,
+            amount: Number,
+            priority: String
+        }
+    ],
+    tips: [String]
+},
 
 
         // Budget lifecycle
