@@ -1,5 +1,14 @@
 
 
+//  Stores a user's monthly budget.
+
+//  The budget contains:
+//  Total monthly amount
+// Planned expenses
+//  AI generated plan later
+//  Approval status later
+ 
+ 
 
 const mongoose = require("mongoose");
 
