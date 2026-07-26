@@ -86,9 +86,7 @@
                     <input type="text" id="category" name="category" placeholder="e.g. Groceries, Rent, Emergency" required>
                 </div>
                 
-                <!-- Although backend doesn't explicitly require description for withdrawal logic, 
-                     the accountController's withdrawMoney function sets it statically to "User withdrawal". 
-                     We can omit it here or let the user type one and pass it, but the backend overrides it. -->
+                <!-- users can add withdraws and it will be logged in the transaction history page -->
 
                 <button type="submit" class="btn" id="withdrawBtn">Submit Withdrawal</button>
                 <div id="message"></div>
