@@ -248,3 +248,28 @@ async function fetchTransactions() {
 
     return data;
 }
+
+// Process a withdrawal from unlocked/available money
+async function withdrawMoney(withdrawalData) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('Please log in first.');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/account/withdraw`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(withdrawalData)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Withdrawal failed');
+    }
+
+    return data;
+}
