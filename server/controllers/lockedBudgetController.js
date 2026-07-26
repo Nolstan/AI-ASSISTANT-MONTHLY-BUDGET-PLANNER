@@ -1,7 +1,10 @@
 
 //  This file Converts an approved budget into a locked budget.
 //  The users money is divided into scheduled releases and ofcourse with a cronjob.
- 
+
+const Budget = require("../models/Budget");
+const LockedBudget = require("../models/LockedBudget");
+
 
 exports.lockBudget = async (req, res) => {
 
