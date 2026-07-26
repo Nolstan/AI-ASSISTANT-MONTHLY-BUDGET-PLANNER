@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Release Schedule | BudgetAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #EFEDE3;
+            --paper-raised: #F7F5EC;
+            --ink: #1F2A22;
+            --ink-soft: #4B5A50;
+            --rule: #D6D0BC;
+            --green: #2F6F4E;
+            --green-dark: #244F39;
+            --gold: #B8912B;
+            --radius: 4px;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); font-family: 'IBM Plex Sans', sans-serif; }
+        h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
+        a { color: inherit; text-decoration: none; }
+        header { border-bottom: 1px solid var(--rule); background: var(--paper-raised); padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.25rem; }
+        nav { display: flex; gap: 20px; font-size: 0.92rem; font-weight: 500; }
+        nav a:hover { color: var(--green); }
+        nav a.active { color: var(--green); border-bottom: 2px solid var(--green); }
+        .container { max-width: 950px; margin: 32px auto; padding: 0 24px; }
+        .card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: var(--radius); padding: 32px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--rule); }
+        th { font-size: 0.85rem; color: var(--ink-soft); }
+        td.mono { font-family: 'IBM Plex Mono', monospace; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: 500; }
+        .badge-pending { background: rgba(184, 145, 43, 0.15); color: var(--gold); }
+        .badge-released { background: rgba(47, 111, 78, 0.15); color: var(--green); }
+        .btn { padding: 8px 14px; background: var(--green); color: var(--paper-raised); border: none; border-radius: var(--radius); font-weight: 500; cursor: pointer; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><a href="dashboard.html">BudgetAI</a></div>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="create-budget.html">Create Budget</a>
+            <a href="ai-review.html">AI Review</a>
+            <a href="approval.html">Approval</a>
+            <a href="release-schedule.html" class="active">Schedule</a>
+            <a href="locked-budget.html">Locked Money</a>
+            <a href="transaction-history.html">Transactions</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h1>Automated Fund Release Schedule</h1>
+            <p style="color: var(--ink-soft); margin-top: 6px;">Funds are unlocked automatically on designated payout dates to keep spending structured.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Release Date</th>
+                        <th>Target Category</th>
+                        <th>Amount (MWK)</th>
+                        <th>Release Condition</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026-08-01</td>
+                        <td>Housing & Rent</td>
+                        <td class="mono">MWK 1,500,000.00</td>
+                        <td>Due Date Auto-Pay</td>
+                        <td><span class="badge badge-pending">Scheduled</span></td>
+                        <td><button class="btn">Release Early</button></td>
+                    </tr>
+                    <tr>
+                        <td>2026-08-07</td>
+                        <td>Weekly Groceries (W1)</td>
+                        <td class="mono">MWK 150,000.00</td>
+                        <td>Weekly Allowance</td>
+                        <td><span class="badge badge-pending">Scheduled</span></td>
+                        <td><button class="btn">Release Early</button></td>
+                    </tr>
+                    <tr>
+                        <td>2026-08-14</td>
+                        <td>Weekly Groceries (W2)</td>
+                        <td class="mono">MWK 150,000.00</td>
+                        <td>Weekly Allowance</td>
+                        <td><span class="badge badge-pending">Scheduled</span></td>
+                        <td><button class="btn">Release Early</button></td>
+                    </tr>
+                    <tr>
+                        <td>2026-07-21</td>
+                        <td>Utility Bill Reserve</td>
+                        <td class="mono">MWK 200,000.00</td>
+                        <td>Manual Approval</td>
+                        <td><span class="badge badge-released">Released</span></td>
+                        <td><span style="color: var(--ink-soft); font-size: 0.85rem;">Completed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="js/api.js"></script>
+</body>
+</html>

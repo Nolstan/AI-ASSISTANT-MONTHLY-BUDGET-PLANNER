@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Approval | BudgetAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #EFEDE3;
+            --paper-raised: #F7F5EC;
+            --ink: #1F2A22;
+            --ink-soft: #4B5A50;
+            --rule: #D6D0BC;
+            --green: #2F6F4E;
+            --green-dark: #244F39;
+            --gold: #B8912B;
+            --radius: 4px;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); font-family: 'IBM Plex Sans', sans-serif; }
+        h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
+        a { color: inherit; text-decoration: none; }
+        header { border-bottom: 1px solid var(--rule); background: var(--paper-raised); padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.25rem; }
+        nav { display: flex; gap: 20px; font-size: 0.92rem; font-weight: 500; }
+        nav a:hover { color: var(--green); }
+        nav a.active { color: var(--green); border-bottom: 2px solid var(--green); }
+        .container { max-width: 800px; margin: 32px auto; padding: 0 24px; }
+        .card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: var(--radius); padding: 32px; }
+        .summary-box { background: var(--paper); border: 1px solid var(--rule); padding: 20px; border-radius: var(--radius); margin: 20px 0; }
+        .summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--rule); }
+        .summary-row:last-child { border-bottom: none; }
+        .mono { font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+        .btn { padding: 12px 24px; background: var(--green); color: var(--paper-raised); border: none; border-radius: var(--radius); font-weight: 500; cursor: pointer; font-size: 0.95rem; }
+        .btn:hover { background: var(--green-dark); }
+        .btn-outline { background: transparent; border: 1px solid var(--ink); color: var(--ink); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><a href="dashboard.html">BudgetAI</a></div>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="create-budget.html">Create Budget</a>
+            <a href="ai-review.html">AI Review</a>
+            <a href="approval.html" class="active">Approval</a>
+            <a href="release-schedule.html">Schedule</a>
+            <a href="locked-budget.html">Locked Money</a>
+            <a href="transaction-history.html">Transactions</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h1>Approve Monthly Budget Plan</h1>
+            <p style="color: var(--ink-soft); margin-top: 6px;">Review final terms before locking and activating your monthly plan.</p>
+
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span>Plan Period</span>
+                    <span class="mono">August 2026</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total Income Commitment</span>
+                    <span class="mono">MWK 4,500,000.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total Allocated Expenses</span>
+                    <span class="mono">MWK 3,200,000.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Scheduled Locked Savings</span>
+                    <span class="mono" style="color: var(--gold);">MWK 800,000.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Unallocated Reserve</span>
+                    <span class="mono" style="color: var(--green);">MWK 500,000.00</span>
+                </div>
+            </div>
+
+            <form id="approvalForm">
+                <div style="margin: 20px 0;">
+                    <label style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer;">
+                        <input type="checkbox" id="confirmTerms" required style="margin-top: 3px;">
+                        <span style="font-size: 0.9rem; color: var(--ink-soft); line-height: 1.4;">
+                            I confirm and approve this monthly budget plan. I authorize BudgetAI to enforce selected fund locking rules and release schedules.
+                        </span>
+                    </label>
+                </div>
+
+                <div style="display: flex; gap: 14px;">
+                    <button type="submit" class="btn">Confirm & Activate Plan &rarr;</button>
+                    <a href="edit-budget.html" class="btn btn-outline">Back to Edit</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/api.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Review | BudgetAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #EFEDE3;
+            --paper-raised: #F7F5EC;
+            --ink: #1F2A22;
+            --ink-soft: #4B5A50;
+            --rule: #D6D0BC;
+            --green: #2F6F4E;
+            --green-dark: #244F39;
+            --gold: #B8912B;
+            --radius: 4px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
+        a { color: inherit; text-decoration: none; }
+        header {
+            border-bottom: 1px solid var(--rule);
+            background: var(--paper-raised);
+            padding: 16px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.25rem; }
+        nav { display: flex; gap: 20px; font-size: 0.92rem; font-weight: 500; }
+        nav a:hover { color: var(--green); }
+        nav a.active { color: var(--green); border-bottom: 2px solid var(--green); }
+        .container { max-width: 900px; margin: 32px auto; padding: 0 24px; }
+        .card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: var(--radius); padding: 32px; margin-bottom: 24px; }
+        .ai-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(47,111,78,0.12); color: var(--green-dark); font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; margin-bottom: 12px; }
+        .score-box { background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; justify-content: space-between; margin: 20px 0; }
+        .score { font-family: 'IBM Plex Mono', monospace; font-size: 2.2rem; font-weight: 600; color: var(--green); }
+        .recommendation-list { list-style: none; padding: 0; margin: 16px 0; }
+        .recommendation-list li { padding: 12px 16px; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); margin-bottom: 10px; font-size: 0.94rem; line-height: 1.5; }
+        .btn { display: inline-block; padding: 12px 22px; background: var(--green); color: var(--paper-raised); border-radius: var(--radius); font-weight: 500; cursor: pointer; border: none; }
+        .btn:hover { background: var(--green-dark); }
+        .btn-outline { background: transparent; border: 1px solid var(--ink); color: var(--ink); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><a href="dashboard.html">BudgetAI</a></div>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="create-budget.html">Create Budget</a>
+            <a href="ai-review.html" class="active">AI Review</a>
+            <a href="approval.html">Approval</a>
+            <a href="release-schedule.html">Schedule</a>
+            <a href="locked-budget.html">Locked Money</a>
+            <a href="transaction-history.html">Transactions</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <span class="ai-badge">&#10024; AI Budget Analysis</span>
+            <h1>Budget Health & Insights</h1>
+            <p style="color: var(--ink-soft); margin-top: 6px;">Evaluation generated for August 2026 Proposed Plan.</p>
+
+            <div class="score-box">
+                <div>
+                    <h3 style="font-size: 1.1rem;">Budget Viability Score</h3>
+                    <p style="color: var(--ink-soft); font-size: 0.88rem; margin-top: 4px;">Based on historical cashflow patterns</p>
+                </div>
+                <div class="score">92 / 100</div>
+            </div>
+
+            <h2>Key AI Recommendations</h2>
+            <ul class="recommendation-list">
+                <li><strong>Groceries cap is optimal:</strong> MWK 600,000/month aligns with your past 90 days average (MWK 585,000/mo).</li>
+                <li><strong>Recommended Lock Rule:</strong> Automatically lock MWK 500,000 for Savings immediately after salary credit to prevent impulse spending.</li>
+                <li><strong>Buffer Alert:</strong> Allocate MWK 150,000 to an unallocated reserve for unexpected utility price increases.</li>
+            </ul>
+
+            <div style="margin-top: 28px; display: flex; gap: 14px;">
+                <a href="approval.html" class="btn">Proceed to Approval &rarr;</a>
+                <a href="edit-budget.html" class="btn btn-outline">Modify Allocation</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/api.js"></script>
+</body>
+</html>

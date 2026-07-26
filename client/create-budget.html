@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Budget | BudgetAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #EFEDE3;
+            --paper-raised: #F7F5EC;
+            --ink: #1F2A22;
+            --ink-soft: #4B5A50;
+            --rule: #D6D0BC;
+            --green: #2F6F4E;
+            --green-dark: #244F39;
+            --radius: 4px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
+        a { color: inherit; text-decoration: none; }
+        header {
+            border-bottom: 1px solid var(--rule);
+            background: var(--paper-raised);
+            padding: 16px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.25rem; }
+        nav { display: flex; gap: 20px; font-size: 0.92rem; font-weight: 500; }
+        nav a:hover { color: var(--green); }
+        nav a.active { color: var(--green); border-bottom: 2px solid var(--green); }
+        .container { max-width: 800px; margin: 32px auto; padding: 0 24px; }
+        .card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: var(--radius); padding: 32px; }
+        .form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.88rem; font-weight: 500; color: var(--ink-soft); margin-bottom: 8px; }
+        .form-group input, .form-group select {
+            font-family: 'IBM Plex Sans', sans-serif;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            border: 1px solid var(--rule);
+            border-radius: var(--radius);
+            background: var(--paper);
+            color: var(--ink);
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .btn { padding: 12px 24px; background: var(--green); color: var(--paper-raised); border: none; border-radius: var(--radius); font-weight: 500; cursor: pointer; font-size: 0.95rem; }
+        .btn:hover { background: var(--green-dark); }
+        .category-block { background: var(--paper); border: 1px solid var(--rule); padding: 16px; border-radius: var(--radius); margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><a href="dashboard.html">BudgetAI</a></div>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="create-budget.html" class="active">Create Budget</a>
+            <a href="ai-review.html">AI Review</a>
+            <a href="approval.html">Approval</a>
+            <a href="release-schedule.html">Schedule</a>
+            <a href="locked-budget.html">Locked Money</a>
+            <a href="transaction-history.html">Transactions</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h1>Create Monthly Budget</h1>
+            <p style="color: var(--ink-soft); margin-bottom: 24px;">Set up your income targets and expense allocations for AI evaluation.</p>
+
+            <form id="createBudgetForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="month">Budget Month</label>
+                        <select id="month" name="month" required>
+                            <option value="August 2026">August 2026</option>
+                            <option value="September 2026">September 2026</option>
+                            <option value="October 2026">October 2026</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="totalIncome">Expected Total Income (MWK)</label>
+                        <input type="number" id="totalIncome" name="totalIncome" placeholder="e.g. 4500000" required step="0.01">
+                    </div>
+                </div>
+
+                <h3 style="margin: 24px 0 12px;">Category Allocations</h3>
+
+                <div class="category-block">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="catRent">Housing & Rent (MWK)</label>
+                            <input type="number" id="catRent" name="catRent" placeholder="1500000.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lockRent">Lock Preference</label>
+                            <select id="lockRent">
+                                <option value="unlocked">Unlocked</option>
+                                <option value="locked">Lock until Due Date</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-block">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="catFood">Food & Groceries (MWK)</label>
+                            <input type="number" id="catFood" name="catFood" placeholder="600000.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lockFood">Lock Preference</label>
+                            <select id="lockFood">
+                                <option value="unlocked">Unlocked</option>
+                                <option value="weekly">Release Weekly</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-block">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="catSavings">Target Savings (MWK)</label>
+                            <input type="number" id="catSavings" name="catSavings" placeholder="500000.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lockSavings">Lock Preference</label>
+                            <select id="lockSavings">
+                                <option value="locked">Strictly Locked</option>
+                                <option value="unlocked">Unlocked</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px; display: flex; gap: 12px; align-items: center;">
+                    <button type="submit" class="btn">Generate & Review with AI &rarr;</button>
+                    <a href="dashboard.html" style="color: var(--ink-soft); font-size: 0.9rem;">Cancel</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/budget.js"></script>
+</body>
+</html>

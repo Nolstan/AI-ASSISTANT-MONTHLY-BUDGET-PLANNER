@@ -1,26 +1,136 @@
-body {
+/* ==========================
+   AUTH PAGES
+========================== */
 
-    font-family: Arial, sans-serif;
+.auth-container{
 
-}
+    min-height:100vh;
 
+    display:flex;
 
-section {
+    justify-content:center;
 
-    overflow: hidden;
+    align-items:center;
 
-}
-
-
-.navbar-brand {
-
-    letter-spacing: 1px;
+    padding:80px 20px;
 
 }
 
 
-.card {
+.auth-content{
 
-    border-radius: 15px;
+    width:100%;
+
+    max-width:450px;
+
+}
+
+
+.auth-content h1{
+
+    margin-bottom:10px;
+
+}
+
+
+.auth-content p{
+
+    color:#666;
+
+    margin-bottom:40px;
+
+}
+
+
+.input-group{
+
+    margin-bottom:25px;
+
+}
+
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+}
+
+
+.input-group input{
+
+    width:100%;
+
+    padding:14px 0;
+
+    border:none;
+
+    border-bottom:1px solid #d9d9d9;
+
+    background:transparent;
+
+    outline:none;
+
+    font-size:16px;
+
+}
+
+
+.input-group input:focus{
+
+    border-bottom:2px solid #111;
+
+}
+
+
+.primary-btn{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:16px;
+
+    border:none;
+
+    cursor:pointer;
+
+    background:#111;
+
+    color:white;
+
+    font-size:16px;
+
+    transition:.3s;
+
+}
+
+
+.primary-btn:hover{
+
+    background:#2f2f2f;
+
+}
+
+
+.bottom-text{
+
+    text-align:center;
+
+    margin-top:30px;
+
+}
+
+
+.bottom-text a{
+
+    color:#111;
+
+    text-decoration:none;
+
+    font-weight:600;
 
 }
