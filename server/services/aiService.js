@@ -49,7 +49,9 @@ IMPORTANT RULES:
 
 5. Every amount must be a whole number.
 
-6. Return ONLY valid JSON.
+6. The "priority" field for each recommended budget item MUST be strictly one of these three exact strings: "Essential", "Important", or "Optional".
+
+7. Return ONLY valid JSON.
 
 Format:
 
@@ -62,7 +64,7 @@ Format:
         {
             "name":"",
             "amount":0,
-            "priority":""
+            "priority":"Essential"
         }
     ],
     "tips":[
@@ -103,6 +105,24 @@ Format:
 
        // Convert JSON string into JavaScript object
 const aiPlan = JSON.parse(content);
+
+
+// Normalize priority string helper
+function normalizePriority(val) {
+    if (!val) return "Important";
+    const str = String(val).trim().toLowerCase();
+    if (str.includes("essent") || str.includes("high") || str.includes("critical") || str.includes("top")) return "Essential";
+    if (str.includes("option") || str.includes("low") || str.includes("sec") || str.includes("discretion")) return "Optional";
+    return "Important";
+}
+
+// Sanitize AI priority outputs
+if (Array.isArray(aiPlan.recommendedBudget)) {
+    aiPlan.recommendedBudget = aiPlan.recommendedBudget.map(item => ({
+        ...item,
+        priority: normalizePriority(item.priority)
+    }));
+}
 
 
 // Validate and automatically correct AI budget totals

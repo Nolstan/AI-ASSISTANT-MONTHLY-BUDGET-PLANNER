@@ -1,6 +1,14 @@
 const mongoose = require("mongoose");
 
 
+function normalizePriority(val) {
+    if (!val) return "Important";
+    const str = String(val).trim().toLowerCase();
+    if (str.includes("essent") || str.includes("high") || str.includes("critical") || str.includes("top")) return "Essential";
+    if (str.includes("option") || str.includes("low") || str.includes("sec") || str.includes("discretion")) return "Optional";
+    return "Important";
+}
+
 const budgetItemSchema = new mongoose.Schema(
     {
         name: {
@@ -18,7 +26,8 @@ const budgetItemSchema = new mongoose.Schema(
         priority: {
             type: String,
             enum: ["Essential", "Important", "Optional"],
-            default: "Important"
+            default: "Important",
+            set: normalizePriority
         }
     },
     { _id: false }
