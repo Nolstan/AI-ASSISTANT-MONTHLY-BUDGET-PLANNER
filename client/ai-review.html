@@ -44,10 +44,12 @@
         .container { max-width: 900px; margin: 32px auto; padding: 0 24px; }
         .card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: var(--radius); padding: 32px; margin-bottom: 24px; }
         .ai-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(47,111,78,0.12); color: var(--green-dark); font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; margin-bottom: 12px; }
-        .score-box { background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; justify-content: space-between; margin: 20px 0; }
-        .score { font-family: 'IBM Plex Mono', monospace; font-size: 2.2rem; font-weight: 600; color: var(--green); }
         .recommendation-list { list-style: none; padding: 0; margin: 16px 0; }
         .recommendation-list li { padding: 12px 16px; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); margin-bottom: 10px; font-size: 0.94rem; line-height: 1.5; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.92rem; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--rule); }
+        th { font-weight: 600; color: var(--ink-soft); }
+        .mono { font-family: 'IBM Plex Mono', monospace; }
         .btn { display: inline-block; padding: 12px 22px; background: var(--green); color: var(--paper-raised); border-radius: var(--radius); font-weight: 500; cursor: pointer; border: none; }
         .btn:hover { background: var(--green-dark); }
         .btn-outline { background: transparent; border: 1px solid var(--ink); color: var(--ink); }
@@ -72,31 +74,43 @@
     <main class="container">
         <section class="card">
             <span class="ai-badge">&#10024; AI Budget Analysis</span>
-            <h1>Budget Health & Insights</h1>
-            <p style="color: var(--ink-soft); margin-top: 6px;">Evaluation generated for August 2026 Proposed Plan.</p>
+            <h1 id="aiReviewTitle">Budget Health & Insights</h1>
+            <p id="aiSummary" style="color: var(--ink-soft); margin-top: 8px; line-height: 1.5;">Loading AI evaluation...</p>
 
-            <div class="score-box">
-                <div>
-                    <h3 style="font-size: 1.1rem;">Budget Viability Score</h3>
-                    <p style="color: var(--ink-soft); font-size: 0.88rem; margin-top: 4px;">Based on historical cashflow patterns</p>
-                </div>
-                <div class="score">92 / 100</div>
-            </div>
+            <h2 style="margin-top: 24px;">Recommended AI Budget Allocation</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Recommended Amount</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody id="recommendedBudgetTable">
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: var(--ink-soft); padding: 16px;">Loading recommendations...</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <h2>Key AI Recommendations</h2>
-            <ul class="recommendation-list">
-                <li><strong>Groceries cap is optimal:</strong> MWK 600,000/month aligns with your past 90 days average (MWK 585,000/mo).</li>
-                <li><strong>Recommended Lock Rule:</strong> Automatically lock MWK 500,000 for Savings immediately after salary credit to prevent impulse spending.</li>
-                <li><strong>Buffer Alert:</strong> Allocate MWK 150,000 to an unallocated reserve for unexpected utility price increases.</li>
+            <h2 style="margin-top: 24px;">Suggested Improvements</h2>
+            <ul id="improvementsList" class="recommendation-list">
+                <li>Analyzing data...</li>
+            </ul>
+
+            <h2 style="margin-top: 24px;">Financial Tips</h2>
+            <ul id="tipsList" class="recommendation-list">
+                <li>Generating tips...</li>
             </ul>
 
             <div style="margin-top: 28px; display: flex; gap: 14px;">
-                <a href="approval.html" class="btn">Proceed to Approval &rarr;</a>
-                <a href="edit-budget.html" class="btn btn-outline">Modify Allocation</a>
+                <a id="proceedApprovalBtn" href="approval.html" class="btn">Proceed to Approval &rarr;</a>
+                <a id="editAllocationBtn" href="edit-budget.html" class="btn btn-outline">Modify Allocation</a>
             </div>
         </section>
     </main>
 
     <script src="js/api.js"></script>
+    <script src="js/ai-review.js"></script>
 </body>
 </html>

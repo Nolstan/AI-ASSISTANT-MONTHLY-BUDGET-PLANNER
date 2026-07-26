@@ -81,7 +81,7 @@
         <div class="flex-between">
             <div>
                 <h1>Monthly Dashboard</h1>
-                <p style="color: var(--ink-soft); margin-top: 4px;">Overview for July 2026</p>
+                <p id="dashboardOverviewSub" style="color: var(--ink-soft); margin-top: 4px;">Loading budget overview...</p>
             </div>
             <div style="display: flex; gap: 12px;">
                 <a href="create-budget.html" class="btn">+ New Budget</a>
@@ -92,19 +92,19 @@
         <section class="grid-stats">
             <article class="card">
                 <h3>Total Monthly Income</h3>
-                <div class="amount">MWK 4,500,000.00</div>
+                <div id="totalMonthlyIncome" class="amount">MWK 0.00</div>
             </article>
             <article class="card">
                 <h3>Allocated Budget</h3>
-                <div class="amount">MWK 3,200,000.00</div>
+                <div id="allocatedBudget" class="amount">MWK 0.00</div>
             </article>
             <article class="card">
                 <h3>Locked Money</h3>
-                <div class="amount" style="color: var(--gold);">MWK 800,000.00</div>
+                <div id="lockedMoney" class="amount" style="color: var(--gold);">MWK 0.00</div>
             </article>
             <article class="card">
                 <h3>Available Balance</h3>
-                <div class="amount" style="color: var(--green);">MWK 500,000.00</div>
+                <div id="availableBalance" class="amount" style="color: var(--green);">MWK 0.00</div>
             </article>
         </section>
 
@@ -123,34 +123,9 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="allocationsTableBody">
                     <tr>
-                        <td><strong>Rent & Housing</strong></td>
-                        <td class="mono">MWK 1,500,000.00</td>
-                        <td class="mono">MWK 1,500,000.00</td>
-                        <td class="mono">MWK 0.00</td>
-                        <td><span class="badge badge-active">Paid</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Food & Groceries</strong></td>
-                        <td class="mono">MWK 600,000.00</td>
-                        <td class="mono">MWK 280,000.00</td>
-                        <td class="mono">MWK 320,000.00</td>
-                        <td><span class="badge badge-active">On Track</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Emergency Locked Fund</strong></td>
-                        <td class="mono">MWK 500,000.00</td>
-                        <td class="mono">MWK 0.00</td>
-                        <td class="mono">MWK 500,000.00</td>
-                        <td><span class="badge badge-locked">Locked</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Savings & Investments</strong></td>
-                        <td class="mono">MWK 600,000.00</td>
-                        <td class="mono">MWK 300,000.00</td>
-                        <td class="mono">MWK 300,000.00</td>
-                        <td><span class="badge badge-locked">Scheduled</span></td>
+                        <td colspan="5" style="text-align: center; color: var(--ink-soft); padding: 24px;">Loading allocations...</td>
                     </tr>
                 </tbody>
             </table>

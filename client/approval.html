@@ -17,6 +17,7 @@
             --green: #2F6F4E;
             --green-dark: #244F39;
             --gold: #B8912B;
+            --danger: #A33B2D;
             --radius: 4px;
         }
         * { box-sizing: border-box; }
@@ -58,28 +59,24 @@
     <main class="container">
         <section class="card">
             <h1>Approve Monthly Budget Plan</h1>
-            <p style="color: var(--ink-soft); margin-top: 6px;">Review final terms before locking and activating your monthly plan.</p>
+            <p style="color: var(--ink-soft); margin-top: 6px;">Review final terms before approving and activating your monthly budget plan.</p>
 
             <div class="summary-box">
                 <div class="summary-row">
                     <span>Plan Period</span>
-                    <span class="mono">August 2026</span>
+                    <span id="planPeriod" class="mono">Current Month</span>
                 </div>
                 <div class="summary-row">
                     <span>Total Income Commitment</span>
-                    <span class="mono">MWK 4,500,000.00</span>
+                    <span id="totalIncomeVal" class="mono">MWK 0.00</span>
                 </div>
                 <div class="summary-row">
                     <span>Total Allocated Expenses</span>
-                    <span class="mono">MWK 3,200,000.00</span>
+                    <span id="totalAllocatedVal" class="mono">MWK 0.00</span>
                 </div>
                 <div class="summary-row">
-                    <span>Scheduled Locked Savings</span>
-                    <span class="mono" style="color: var(--gold);">MWK 800,000.00</span>
-                </div>
-                <div class="summary-row">
-                    <span>Unallocated Reserve</span>
-                    <span class="mono" style="color: var(--green);">MWK 500,000.00</span>
+                    <span>Plan Status</span>
+                    <span id="planStatusVal" class="mono" style="color: var(--gold);">Draft</span>
                 </div>
             </div>
 
@@ -88,19 +85,22 @@
                     <label style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer;">
                         <input type="checkbox" id="confirmTerms" required style="margin-top: 3px;">
                         <span style="font-size: 0.9rem; color: var(--ink-soft); line-height: 1.4;">
-                            I confirm and approve this monthly budget plan. I authorize BudgetAI to enforce selected fund locking rules and release schedules.
+                            I confirm and approve this monthly budget plan. I authorize BudgetAI to save and activate this final allocation plan.
                         </span>
                     </label>
                 </div>
 
+                <div id="formMessage" style="margin-bottom: 16px; font-size: 0.9rem; text-align: center;"></div>
+
                 <div style="display: flex; gap: 14px;">
                     <button type="submit" class="btn">Confirm & Activate Plan &rarr;</button>
-                    <a href="edit-budget.html" class="btn btn-outline">Back to Edit</a>
+                    <a id="backEditBtn" href="edit-budget.html" class="btn btn-outline">Back to Edit</a>
                 </div>
             </form>
         </section>
     </main>
 
     <script src="js/api.js"></script>
+    <script src="js/approval.js"></script>
 </body>
 </html>
