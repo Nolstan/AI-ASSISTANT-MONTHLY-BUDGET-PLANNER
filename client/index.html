@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BudgetAI — Your money, laid out plainly</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper: #EFEDE3;
+    --paper-raised: #F7F5EC;
+    --ink: #1F2A22;
+    --ink-soft: #4B5A50;
+    --rule: #D6D0BC;
+    --green: #2F6F4E;
+    --green-dark: #244F39;
+    --gold: #B8912B;
+    --radius: 4px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .mono{ font-family: 'IBM Plex Mono', monospace; }
+
+  a{ color: inherit; text-decoration: none; }
+
+  .container{
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav .container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height: 72px;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand-mark{
+    width: 26px; height: 26px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap: 28px;
+  }
+  .nav-links a.login{
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+  }
+  .nav-links a.login:hover{ border-bottom-color: var(--ink-soft); }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding: 12px 22px;
+    border-radius: var(--radius);
+    font-weight: 500;
+    font-size: 0.95rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-primary{
+    background: var(--green);
+    color: var(--paper-raised);
+  }
+  .btn-primary:hover{ background: var(--green-dark); transform: translateY(-1px); }
+  .btn-outline{
+    background: transparent;
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .btn-outline:hover{ background: var(--ink); color: var(--paper-raised); }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding: 88px 0 72px;
+  }
+  .hero .grid{
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 28px; height: 1px;
+    background: var(--green-dark);
+  }
+  .hero h1{
+    font-size: clamp(2.3rem, 4vw, 3.4rem);
+    line-height: 1.08;
+  }
+  .hero h1 em{
+    font-style: italic;
+    color: var(--green);
+  }
+  .hero p.lead{
+    margin-top: 22px;
+    font-size: 1.08rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+  .hero-cta{
+    margin-top: 34px;
+    display:flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  /* ---------- Ledger card (signature element) ---------- */
+  .ledger{
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 30px 28px 24px;
+    box-shadow: 0 1px 0 var(--rule), 0 24px 48px -32px rgba(31,42,34,0.35);
+  }
+  .ledger-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom: 6px;
+  }
+  .ledger-head h3{ font-size: 1.15rem; }
+  .ledger-head span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+  .ledger-sub{
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+  }
+  .ledger-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding: 13px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .ledger-row:last-of-type{ border-bottom: none; }
+  .ledger-row .label{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    font-size: 0.95rem;
+  }
+  .dot{
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot.rent{ background: var(--ink-soft); }
+  .dot.food{ background: var(--gold); }
+  .dot.save{ background: var(--green); }
+  .ledger-row .amount{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight: 500;
+    font-size: 0.98rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .ledger-total{
+    margin-top: 14px;
+    padding-top: 16px;
+    border-top: 1.5px solid var(--ink);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .ledger-total .label{ font-size: 0.9rem; color: var(--ink-soft); }
+  .ledger-total .amount{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--green-dark);
+  }
+  .ledger-flag{
+    margin-top: 18px;
+    background: rgba(47,111,78,0.09);
+    color: var(--green-dark);
+    font-size: 0.82rem;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+
+  /* ---------- Features ---------- */
+  .features{
+    border-top: 1px solid var(--rule);
+    padding: 76px 0;
+  }
+  .section-head{
+    max-width: 56ch;
+    margin-bottom: 48px;
+  }
+  .section-head .eyebrow{ margin-bottom: 14px; }
+  .section-head h2{
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  }
+  .feature-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .feature{
+    background: var(--paper-raised);
+    padding: 32px 28px;
+  }
+  .feature .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .feature h4{
+    font-family:'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+  }
+  .feature p{
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top: 1px solid var(--rule);
+    padding: 28px 0;
+  }
+  footer .container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  footer p{
+    margin:0;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  footer .foot-links{
+    display:flex;
+    gap: 20px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  footer .foot-links a:hover{ color: var(--ink); }
+
+  @media (max-width: 860px){
+    .hero .grid{ grid-template-columns: 1fr; gap: 44px; }
+    .feature-grid{ grid-template-columns: 1fr; }
+    .nav-links{ gap: 14px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <a class="brand" href="#top">
+      <span class="brand-mark">B</span>
+      BudgetAI
+    </a>
+    <div class="nav-links">
+      <a class="login" href="login.html">Log in</a>
+      <a class="btn btn-primary" href="register.html">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="top">
+  <div class="container grid">
+
+    <div>
+      <p class="eyebrow">AI-assisted budgeting</p>
+      <h1>A monthly plan that <em>actually</em> fits how you spend</h1>
+      <p class="lead">
+        Tell BudgetAI your income and goals. It builds a realistic monthly
+        plan, tracks what you spend against it, and lets you release money
+        on your own schedule — no spreadsheets required.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="register.html">Create your plan</a>
+        <a class="btn btn-outline" href="login.html">Log in</a>
+      </div>
+    </div>
+
+    <div class="ledger">
+      <div class="ledger-head">
+        <h3>March plan</h3>
+        <span>Income $3,200</span>
+      </div>
+      <p class="ledger-sub">Built automatically from your last 3 months</p>
+
+      <div class="ledger-row">
+        <span class="label"><span class="dot rent"></span>Rent</span>
+        <span class="amount">$1,150</span>
+      </div>
+      <div class="ledger-row">
+        <span class="label"><span class="dot food"></span>Food &amp; groceries</span>
+        <span class="amount">$480</span>
+      </div>
+      <div class="ledger-row">
+        <span class="label"><span class="dot save"></span>Savings</span>
+        <span class="amount">$500</span>
+      </div>
+
+      <div class="ledger-total">
+        <span class="label">Left to allocate</span>
+        <span class="amount">$1,070</span>
+      </div>
+
+      <div class="ledger-flag">Plan adjusts automatically if a bill runs late</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="features">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2>Three things it handles so you don't have to</h2>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature">
+        <span class="num">01</span>
+        <h4>Plans that match reality</h4>
+        <p>Budgets are generated from your actual spending history, not a generic template — so the numbers hold up past week one.</p>
+      </div>
+      <div class="feature">
+        <span class="num">02</span>
+        <h4>Money on your terms</h4>
+        <p>Lock categories and decide exactly when funds become available, so spending stays intentional instead of automatic.</p>
+      </div>
+      <div class="feature">
+        <span class="num">03</span>
+        <h4>Insight, not just tracking</h4>
+        <p>See where a plan is slipping early, with plain explanations of why — not just a chart to interpret yourself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>BudgetAI © 2026</p>
+    <div class="foot-links">
+      <a href="#top">Back to top</a>
+      <a href="login.html">Log in</a>
+      <a href="register.html">Get started</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
