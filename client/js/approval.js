@@ -81,10 +81,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             await approveBudget(targetBudget._id);
 
             messageContainer.style.color = 'var(--green)';
-            messageContainer.textContent = 'Budget approved & activated successfully! Redirecting to Dashboard...';
+            messageContainer.textContent = 'Budget approved! Now set withdrawal dates to lock your funds...';
 
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
+                window.location.href = `release-schedule.html?setup=true&budgetId=${targetBudget._id}`;
             }, 1200);
 
         } catch (err) {
