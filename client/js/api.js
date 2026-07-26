@@ -2,7 +2,11 @@
 
 
 // API Base Configuration
-const API_BASE_URL = 'http://localhost:5000/api';
+// Uses absolute localhost for isolated dev server (like Live Server) 
+// but falls back to relative '/api' for production deployment (e.g. Render)
+const API_BASE_URL = window.location.hostname === 'localhost' && window.location.port !== '5000' 
+    ? 'http://localhost:5000/api' 
+    : '/api';
 
 // this will handle the registration of the user by sending the data to the backend
 async function registerUser(userData) {
