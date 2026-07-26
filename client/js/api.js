@@ -41,3 +41,51 @@ async function loginUser(credentials) {
 
     return data;
 }
+
+// Fetch user's budgets from backend
+async function fetchBudgets() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('No authentication token found');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/budget`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch budgets');
+    }
+
+    return data;
+}
+
+// Fetch user's account balance summary from backend
+async function fetchAccountBalance() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('No authentication token found');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/account/balance`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch account balance');
+    }
+
+    return data;
+}
