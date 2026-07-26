@@ -154,63 +154,88 @@ http://localhost:3000
 
 # Project Workflow
 
-### Step 1 — Create Budget
+## Step 1 — Register Account
+
+New users create an account by providing their personal details. The system securely stores their information and encrypts their password before creating the account.
+
+**Screenshot: Registration Page**
+
+![Register](screenshots/register.png)
+
+---
+
+## Step 2 — Login
+
+Registered users authenticate using their email and password. Upon successful login, they are redirected to their personal dashboard.
+
+**Screenshot: Login Page**
+
+![Login](screenshots/login.png)
+
+---
+
+## Step 3 — Create Budget
 
 The user enters:
 
 - Monthly income
 - Expected expenses
 
----
+**Screenshot: Create Budget**
 
-### Step 2 — AI Budget Review
-
-The backend sends the budget to the Groq AI model.
-
-The AI:
-
-- validates calculations
-- balances expenses
-- recommends improvements
-- ensures allocations match available income
+![Create Budget](screenshots/create-budget.png)
 
 ---
 
-### Step 3 — User Approval
+## Step 4 — AI Budget Review
 
-The user reviews the AI recommendations.
+The backend sends the budget to the Groq AI model, which analyzes the submitted information and returns a balanced spending plan with personalized recommendations.
 
-They may:
+**Screenshot: AI Recommendation**
 
-- accept the recommendations
-- modify allocations
-- finalize the budget
+![AI Recommendation](screenshots/ai-review.png)
 
 ---
 
-### Step 4 — Schedule & Lock Funds
+## Step 5 — User Approval
 
-Each budget category receives a withdrawal date.
+The user reviews the AI recommendations, makes any necessary adjustments, and approves the final budget.
 
-Examples:
+**Screenshot: Budget Modification and Approval**
+![Budget Approval](screenshots/budget-modification.png)
 
-- Rent → 1st
-- Groceries → Every Friday
-- Transport → Every Monday
-
-The system locks those allocations inside the user's budget vault.
+![Budget Approval](screenshots/budget-approved.png)
 
 ---
 
-### Step 5 — Automatic Release
+## Step 6 — Schedule & Lock Funds
 
-A scheduled background task checks daily for categories whose release dates have arrived.
+The user assigns withdrawal dates to each budget category. The system then locks the allocated funds until their scheduled release dates.
 
-Eligible funds become available for withdrawal.
+**Screenshot: Schedule & Lock Funds**
 
-Every transaction is recorded for accountability and auditing.
+![Schedule & Lock](screenshots/schedule-lock.png)
 
 ---
+
+## Step 7 — Dashboard Overview
+
+The dashboard provides an overview of the user's financial status, including total allocated funds, locked balances, available balances, and recent transactions.
+
+**Screenshot: Dashboard**
+
+![Create Budget](screenshots/dashboard.png)
+
+---
+
+## Step 8 — Automatic Fund Release
+
+A scheduled background task automatically releases locked funds when their withdrawal dates arrive. Released funds become available for withdrawal, and every transaction is recorded for accountability.
+![Released Funds](screenshots/loc-funds.png)
+
+**Screenshot: Released Funds**
+Funds that are unlocked will be withdrawn here
+![Released Funds](screenshots/released-funds.png)
 
 # Why BudgetAI?
 
