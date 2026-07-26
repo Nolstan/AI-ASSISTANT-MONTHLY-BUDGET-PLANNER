@@ -46,7 +46,7 @@
         table { width: 100%; border-collapse: collapse; margin: 20px 0; }
         th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--rule); }
         th { font-size: 0.85rem; color: var(--ink-soft); }
-        input {
+        input, select {
             font-family: 'IBM Plex Sans', sans-serif;
             padding: 8px 12px;
             font-size: 0.9rem;
@@ -57,8 +57,9 @@
             width: 100%;
         }
         .btn { padding: 10px 20px; background: var(--green); color: var(--paper-raised); border: none; border-radius: var(--radius); font-weight: 500; cursor: pointer; }
-        .btn-danger { background: var(--danger); }
+        .btn-danger { background: var(--danger); color: white; border: none; border-radius: var(--radius); cursor: pointer; }
         .btn-outline { background: transparent; border: 1px solid var(--ink); color: var(--ink); }
+        .totals-summary { background: var(--paper); border: 1px solid var(--rule); padding: 16px; border-radius: var(--radius); margin-bottom: 20px; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
@@ -80,57 +81,45 @@
     <main class="container">
         <section class="card">
             <h1>Edit Budget Plan</h1>
-            <p style="color: var(--ink-soft); margin-top: 6px;">Modify line items, reallocate amounts, or add new budget categories.</p>
+            <p style="color: var(--ink-soft); margin-top: 6px;">Modify line items and reallocate amounts to customize your recommended AI budget.</p>
+
+            <div class="totals-summary">
+                <div>Total Monthly Budget: <strong id="targetMonthlyTotal">MWK 0.00</strong></div>
+                <div>Current Allocated Sum: <strong id="currentAllocatedTotal">MWK 0.00</strong></div>
+            </div>
 
             <form id="editBudgetForm">
                 <table>
                     <thead>
                         <tr>
-                            <th>Category Name</th>
+                            <th>Category / Item Name</th>
                             <th>Allocated Amount (MWK)</th>
-                            <th>Lock Strategy</th>
+                            <th>Priority</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="budgetRows">
                         <tr>
-                            <td><input type="text" value="Housing & Rent" name="category_0"></td>
-                            <td><input type="number" value="1500000.00" name="amount_0" step="0.01"></td>
-                            <td>
-                                <select name="lock_0" style="padding: 8px; border: 1px solid var(--rule); background: var(--paper); border-radius: var(--radius);">
-                                    <option value="due_date" selected>Due Date</option>
-                                    <option value="unlocked">Unlocked</option>
-                                    <option value="strict">Strict Lock</option>
-                                </select>
-                            </td>
-                            <td><button type="button" class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem;">Remove</button></td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" value="Food & Groceries" name="category_1"></td>
-                            <td><input type="number" value="600000.00" name="amount_1" step="0.01"></td>
-                            <td>
-                                <select name="lock_1" style="padding: 8px; border: 1px solid var(--rule); background: var(--paper); border-radius: var(--radius);">
-                                    <option value="weekly" selected>Weekly Release</option>
-                                    <option value="unlocked">Unlocked</option>
-                                </select>
-                            </td>
-                            <td><button type="button" class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem;">Remove</button></td>
+                            <td colspan="4" style="text-align: center; color: var(--ink-soft); padding: 16px;">Loading plan...</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <div style="margin-bottom: 24px;">
-                    <button type="button" class="btn btn-outline" style="font-size: 0.88rem;">+ Add Category</button>
+                    <button type="button" id="addCategoryBtn" class="btn btn-outline" style="font-size: 0.88rem;">+ Add Category</button>
                 </div>
 
+                <div id="formMessage" style="margin-bottom: 16px; font-size: 0.9rem; text-align: center;"></div>
+
                 <div style="display: flex; gap: 12px; align-items: center;">
-                    <button type="submit" class="btn">Save & Re-evaluate Plan</button>
-                    <a href="dashboard.html" style="color: var(--ink-soft); font-size: 0.9rem;">Cancel Changes</a>
+                    <button type="submit" class="btn">Save & Proceed to Approval &rarr;</button>
+                    <a href="ai-review.html" style="color: var(--ink-soft); font-size: 0.9rem;">Cancel</a>
                 </div>
             </form>
         </section>
     </main>
 
     <script src="js/api.js"></script>
+    <script src="js/edit-budget.js"></script>
 </body>
 </html>
