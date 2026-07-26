@@ -164,6 +164,43 @@ async function approveBudget(budgetId) {
     return data;
 }
 
+// Lock an approved budget with user-defined release schedule
+async function lockBudget(budgetId, releases) {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Please log in first.');
+
+    const response = await fetch(`${API_BASE_URL}/locked-budget/${budgetId}/lock`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ releases })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Failed to lock budget');
+    return data;
+}
+
+// Fetch user's locked budget and release schedule
+async function fetchLockedBudget() {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('No authentication token found');
+
+    const response = await fetch(`${API_BASE_URL}/locked-budget`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Failed to fetch locked budget');
+    return data;
+}
+
 // Fetch user's account balance summary from backend
 async function fetchAccountBalance() {
     const token = localStorage.getItem('token');
