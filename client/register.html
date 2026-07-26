@@ -1,157 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create account | BudgetAI</title>
 
-    <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<style>
+  :root{
+    --paper: #EFEDE3;
+    --paper-raised: #F7F5EC;
+    --ink: #1F2A22;
+    --ink-soft: #4B5A50;
+    --rule: #D6D0BC;
+    --green: #2F6F4E;
+    --green-dark: #244F39;
+    --danger: #A33B2D;
+    --radius: 4px;
+  }
 
-    <title>Create Account | BudgetAI</title>
+  *{ box-sizing: border-box; }
 
-    <link rel="stylesheet" href="css/style.css">
+  body{
+    margin:0;
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+  }
 
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+
+  /* ---------- Nav ---------- */
+  nav{
+    border-bottom: 1px solid var(--rule);
+    padding: 22px 28px;
+  }
+  .logo a{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+  }
+
+  /* ---------- Auth layout ---------- */
+  .auth-container{
+    flex: 1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 48px 20px;
+  }
+
+  .auth-content{
+    width: 100%;
+    max-width: 400px;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 40px 36px 32px;
+    box-shadow: 0 1px 0 var(--rule), 0 24px 48px -32px rgba(31,42,34,0.35);
+  }
+
+  .auth-content h1{
+    font-size: 1.7rem;
+  }
+
+  .auth-content > p{
+    margin: 10px 0 28px;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  /* ---------- Form ---------- */
+  .input-group{
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-group label{
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    margin-bottom: 7px;
+  }
+
+  .input-group input{
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 11px 14px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+
+  .input-group input::placeholder{ color: #9A9686; }
+
+  .input-group input:hover{ border-color: var(--ink-soft); }
+
+  .input-group input:focus{
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(47,111,78,0.14);
+  }
+
+  .input-group input:invalid:not(:placeholder-shown){
+    border-color: var(--danger);
+  }
+
+  .primary-btn{
+    width: 100%;
+    margin-top: 8px;
+    padding: 13px 18px;
+    background: var(--green);
+    color: var(--paper-raised);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.98rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s ease, transform .15s ease;
+  }
+
+  .primary-btn:hover{ background: var(--green-dark); }
+  .primary-btn:active{ transform: translateY(1px); }
+
+  .bottom-text{
+    text-align: center;
+    margin: 24px 0 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .bottom-text a{
+    color: var(--green-dark);
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+  }
+  .bottom-text a:hover{ border-bottom-color: var(--green-dark); }
+
+  @media (max-width: 460px){
+    .auth-content{ padding: 32px 24px 26px; }
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+  }
+</style>
 </head>
 
 <body>
 
-    <nav>
+<nav>
+  <div class="logo">
+    <a href="index.html">BudgetAI</a>
+  </div>
+</nav>
 
-        <div class="logo">
+<main class="auth-container">
+  <div class="auth-content">
 
-            <a href="index.html">
-                BudgetAI
-            </a>
+    <h1>Create your account</h1>
+    <p>Start planning your finances with AI.</p>
 
-        </div>
+    <form id="registerForm">
 
-    </nav>
+      <div class="input-group">
+        <label for="name">Full name</label>
+        <input type="text" id="name" placeholder="Jane Kariuki" required>
+      </div>
 
+      <div class="input-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" placeholder="jane@example.com" required>
+      </div>
 
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="At least 8 characters" required minlength="8">
+      </div>
 
-    <main class="auth-container">
+      <div class="input-group">
+        <label for="confirmPassword">Confirm password</label>
+        <input type="password" id="confirmPassword" placeholder="Re-enter your password" required minlength="8">
+      </div>
 
-        <div class="auth-content">
+      <button type="submit" class="primary-btn">Create account</button>
 
-            <h1>Create your account</h1>
+    </form>
 
-            <p>
+    <p class="bottom-text">
+      Already have an account? <a href="login.html">Log in</a>
+    </p>
 
-                Start planning your finances with AI.
+  </div>
+</main>
 
-            </p>
-
-
-            <form id="registerForm">
-
-                <div class="input-group">
-
-                    <label>
-
-                        Full Name
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="name"
-                        required
-                    >
-
-                </div>
-
-
-
-                <div class="input-group">
-
-                    <label>
-
-                        Email Address
-
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        required
-                    >
-
-                </div>
-
-
-
-                <div class="input-group">
-
-                    <label>
-
-                        Password
-
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        required
-                    >
-
-                </div>
-
-
-
-                <div class="input-group">
-
-                    <label>
-
-                        Confirm Password
-
-                    </label>
-
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        required
-                    >
-
-                </div>
-
-
-
-                <button
-                    type="submit"
-                    class="primary-btn"
-                >
-
-                    Create Account
-
-                </button>
-
-            </form>
-
-
-
-            <p class="bottom-text">
-
-                Already have an account?
-
-                <a href="login.html">
-
-                    Login
-
-                </a>
-
-            </p>
-
-        </div>
-
-    </main>
-
-
-
-    <script src="js/api.js"></script>
-
-    <script src="js/register.js"></script>
+<script src="js/api.js"></script>
+<script src="js/register.js"></script>
 
 </body>
-
 </html>
