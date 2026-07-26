@@ -66,6 +66,104 @@ async function fetchBudgets() {
     return data;
 }
 
+// Create new budget in backend
+async function createBudget(budgetData) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('Please log in to create a budget.');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/budget`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(budgetData)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to create budget');
+    }
+
+    return data;
+}
+
+// Generate AI plan for budget
+async function generateAIPlan(budgetId) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('Please log in first.');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/ai/generate/${budgetId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'AI plan generation failed');
+    }
+
+    return data;
+}
+
+// Update budget plan (recommended budget edit)
+async function updateBudgetPlan(budgetId, recommendedBudget) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('Please log in first.');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/budget/${budgetId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ recommendedBudget })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to update budget plan');
+    }
+
+    return data;
+}
+
+// Approve budget plan
+async function approveBudget(budgetId) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('Please log in first.');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/budget/${budgetId}/approve`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to approve budget');
+    }
+
+    return data;
+}
+
 // Fetch user's account balance summary from backend
 async function fetchAccountBalance() {
     const token = localStorage.getItem('token');
