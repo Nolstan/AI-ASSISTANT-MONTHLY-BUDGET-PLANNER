@@ -16,10 +16,13 @@ app.use(cors());
 app.use(express.json());
 
 
-//   Temporary test route.
+const path = require("path");
 
+// Serve static frontend files from the client directory
+app.use(express.static(path.join(__dirname, "../client")));
 
-app.get("/", (req, res) => {
+// Temporary test route / Health check for API
+app.get("/api/health", (req, res) => {
     res.json({
         success: true,
         message: "AI Monthly Budget Planner API is running."
