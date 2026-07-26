@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -165,84 +166,84 @@
     flex-wrap: wrap;
   }
 
-  /* ---------- Ledger card (signature element) ---------- */
-  .ledger{
+  /* ---------- Chat mockup (signature element) ---------- */
+  .chat-card{
     background: var(--paper-raised);
     border: 1px solid var(--rule);
     border-radius: var(--radius);
-    padding: 30px 28px 24px;
+    padding: 26px 24px;
     box-shadow: 0 1px 0 var(--rule), 0 24px 48px -32px rgba(31,42,34,0.35);
   }
-  .ledger-head{
+  .chat-head{
     display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    margin-bottom: 6px;
-  }
-  .ledger-head h3{ font-size: 1.15rem; }
-  .ledger-head span{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--ink-soft);
-  }
-  .ledger-sub{
-    color: var(--ink-soft);
-    font-size: 0.85rem;
-    margin-bottom: 18px;
-  }
-  .ledger-row{
-    display:flex;
-    justify-content:space-between;
     align-items:center;
-    padding: 13px 0;
-    border-bottom: 1px dashed var(--rule);
+    justify-content:space-between;
+    margin-bottom: 20px;
   }
-  .ledger-row:last-of-type{ border-bottom: none; }
-  .ledger-row .label{
+  .chat-head h3{ font-size: 1.05rem; }
+  .chat-head span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap: 6px;
+  }
+  .chat-head span::before{
+    content:"";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .bubble{
+    max-width: 84%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 0.94rem;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .bubble.user{
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+    color: var(--ink);
+  }
+  .bubble.ai{
+    background: var(--green-dark);
+    color: var(--paper-raised);
+    border-bottom-left-radius: 4px;
+  }
+  .bubble.ai .amt{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight: 500;
+  }
+  .chat-input{
+    margin-top: 6px;
     display:flex;
     align-items:center;
     gap: 10px;
-    font-size: 0.95rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 8px 8px 8px 16px;
+    background: var(--paper);
   }
-  .dot{
-    width: 8px; height: 8px;
+  .chat-input span{
+    flex:1;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .chat-input .send{
+    width: 30px; height: 30px;
     border-radius: 50%;
+    background: var(--green);
+    color: var(--paper-raised);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 0.9rem;
     flex-shrink: 0;
-  }
-  .dot.rent{ background: var(--ink-soft); }
-  .dot.food{ background: var(--gold); }
-  .dot.save{ background: var(--green); }
-  .ledger-row .amount{
-    font-family:'IBM Plex Mono', monospace;
-    font-weight: 500;
-    font-size: 0.98rem;
-    font-variant-numeric: tabular-nums;
-  }
-  .ledger-total{
-    margin-top: 14px;
-    padding-top: 16px;
-    border-top: 1.5px solid var(--ink);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-  }
-  .ledger-total .label{ font-size: 0.9rem; color: var(--ink-soft); }
-  .ledger-total .amount{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--green-dark);
-  }
-  .ledger-flag{
-    margin-top: 18px;
-    background: rgba(47,111,78,0.09);
-    color: var(--green-dark);
-    font-size: 0.82rem;
-    padding: 10px 14px;
-    border-radius: var(--radius);
-    display:flex;
-    align-items:center;
-    gap: 8px;
   }
 
   /* ---------- Features ---------- */
@@ -357,7 +358,7 @@
       <p class="lead">
         Tell BudgetAI your income and goals. It builds a realistic monthly
         plan, tracks what you spend against it, and lets you release money
-        on your own schedule — no spreadsheets required.
+        on your own schedule no spreadsheets required.
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="register.html">Create your plan</a>
@@ -365,32 +366,23 @@
       </div>
     </div>
 
-    <div class="ledger">
-      <div class="ledger-head">
-        <h3>March plan</h3>
-        <span>Income MWK 3,200,000</span>
-      </div>
-      <p class="ledger-sub">Built automatically from your last 3 months</p>
-
-      <div class="ledger-row">
-        <span class="label"><span class="dot rent"></span>Rent</span>
-        <span class="amount">MWK 1,150,000</span>
-      </div>
-      <div class="ledger-row">
-        <span class="label"><span class="dot food"></span>Food &amp; groceries</span>
-        <span class="amount">MWK 480,000</span>
-      </div>
-      <div class="ledger-row">
-        <span class="label"><span class="dot save"></span>Savings</span>
-        <span class="amount">MWK 500,000</span>
+    <div class="chat-card">
+      <div class="chat-head">
+        <h3>Ask BudgetAI</h3>
+        <span>Live</span>
       </div>
 
-      <div class="ledger-total">
-        <span class="label">Left to allocate</span>
-        <span class="amount">MWK 1,070,000</span>
+      <div class="bubble user">I want to save MWK 500,000 this month</div>
+      <div class="bubble ai">
+        Cut dining out by <span class="amt">MWK 80,000</span> and shift
+        <span class="amt">MWK 420,000</span> from your buffer you'll hit
+        <span class="amt">MWK 500,000</span> saved by day 3.
       </div>
 
-      <div class="ledger-flag">Plan adjusts automatically if a bill runs late</div>
+      <div class="chat-input">
+        <span>Ask about a bill, a goal, or next month...</span>
+        <div class="send">&rarr;</div>
+      </div>
     </div>
 
   </div>
