@@ -65,9 +65,9 @@
             <div class="lock-summary">
                 <div>
                     <h3>Total Locked Assets</h3>
-                    <p style="color: var(--ink-soft); font-size: 0.88rem; margin-top: 4px;">Protected across 2 active lock rules</p>
+                    <p id="lockRulesCount" style="color: var(--ink-soft); font-size: 0.88rem; margin-top: 4px;">Loading...</p>
                 </div>
-                <div class="lock-amount">MWK 800,000.00</div>
+                <div id="totalLockedAmount" class="lock-amount">MWK 0.00</div>
             </div>
 
             <h2>Active Lock Rules</h2>
@@ -76,25 +76,13 @@
                     <tr>
                         <th>Lock Vault / Target</th>
                         <th>Locked Amount (MWK)</th>
-                        <th>Unlock Rule</th>
-                        <th>Unlock Date</th>
-                        <th>Action</th>
+                        <th>Withdrawal Date</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="lockedRulesBody">
                     <tr>
-                        <td><strong>Emergency Fund Vault</strong></td>
-                        <td class="mono">MWK 500,000.00</td>
-                        <td>Emergency Override Only</td>
-                        <td>Indefinite</td>
-                        <td><button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Emergency Request</button></td>
-                    </tr>
-                    <tr>
-                        <td><strong>End of Month Savings</strong></td>
-                        <td class="mono">MWK 300,000.00</td>
-                        <td>Time Lock (30 Days)</td>
-                        <td>2026-08-31</td>
-                        <td><span style="color: var(--ink-soft); font-size: 0.85rem;">Time Locked</span></td>
+                        <td colspan="4" style="text-align: center; color: var(--ink-soft); padding: 24px;">Loading locked funds...</td>
                     </tr>
                 </tbody>
             </table>
@@ -102,5 +90,6 @@
     </main>
 
     <script src="js/api.js"></script>
+    <script src="js/locked-budget.js"></script>
 </body>
 </html>
