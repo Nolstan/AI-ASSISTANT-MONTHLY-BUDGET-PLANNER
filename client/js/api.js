@@ -224,3 +224,27 @@ async function fetchAccountBalance() {
 
     return data;
 }
+
+// Fetch user's transaction history from backend
+async function fetchTransactions() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('No authentication token found');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/account/transactions`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch transactions');
+    }
+
+    return data;
+}
