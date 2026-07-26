@@ -22,37 +22,22 @@ exports.getLockedBudget = async (req, res) => {
     try {
 
 
-        const lockedBudget =
-            await LockedBudget.findOne({
+        const lockedBudgets = await LockedBudget.find({
+            user: req.user.id
+        }).populate('budget');
 
-                user: req.user.id
-
-            });
-
-
-
-        if (!lockedBudget) {
-
+        if (!lockedBudgets || lockedBudgets.length === 0) {
             return res.status(404).json({
-
-                message:
-                "No locked budget found"
-
+                message: "No locked budgets found"
             });
-
         }
 
-
+        let totalLockedAmount = 0;
+        lockedBudgets.forEach(lb => totalLockedAmount += lb.lockedAmount);
 
         res.json({
-
-            lockedAmount:
-            lockedBudget.lockedAmount,
-
-
-            releases:
-            lockedBudget.releases
-
+            totalLockedAmount,
+            lockedBudgets
         });
 
 
@@ -88,56 +73,29 @@ exports.getAvailableMoney = async (req,res)=>{
     try {
 
 
-        const lockedBudget =
-            await LockedBudget.findOne({
+        const lockedBudgets = await LockedBudget.find({
+            user: req.user.id
+        });
 
-                user:req.user.id
-
-            });
-
-
-
-        if(!lockedBudget){
-
+        if(!lockedBudgets || lockedBudgets.length === 0){
             return res.status(404).json({
-
-                message:
-                "No locked budget found"
-
+                message: "No locked budgets found"
             });
-
         }
 
+        let releasedItems = [];
+        let availableMoney = 0;
 
-
-        const releasedItems =
-            lockedBudget.releases.filter(
-
-                item =>
-                item.released === true
-
-            );
-
-
-
-        const availableMoney =
-            releasedItems.reduce(
-
-                (total,item)=>
-                total + item.amount,
-
-                0
-
-            );
-
-
+        lockedBudgets.forEach(budget => {
+            const items = budget.releases.filter(item => item.released === true);
+            releasedItems = releasedItems.concat(items);
+            
+            availableMoney += items.reduce((total, item) => total + (item.amount - (item.withdrawnAmount || 0)), 0);
+        });
 
         res.json({
-
             availableMoney,
-
             releasedItems
-
         });
 
 
@@ -172,42 +130,24 @@ exports.getUpcomingReleases = async(req,res)=>{
     try {
 
 
-        const lockedBudget =
-            await LockedBudget.findOne({
+        const lockedBudgets = await LockedBudget.find({
+            user: req.user.id
+        });
 
-                user:req.user.id
-
-            });
-
-
-
-        if(!lockedBudget){
-
+        if(!lockedBudgets || lockedBudgets.length === 0){
             return res.status(404).json({
-
-                message:
-                "No locked budget found"
-
+                message: "No locked budgets found"
             });
-
         }
 
-
-
-        const upcoming =
-            lockedBudget.releases.filter(
-
-                item =>
-                item.released === false
-
-            );
-
-
+        let upcoming = [];
+        lockedBudgets.forEach(budget => {
+            const items = budget.releases.filter(item => item.released === false);
+            upcoming = upcoming.concat(items);
+        });
 
         res.json({
-
             upcoming
-
         });
 
 

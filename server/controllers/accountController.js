@@ -25,79 +25,58 @@ exports.withdrawMoney = async(req,res)=>{
 
 
 
-        const lockedBudget =
-        await LockedBudget.findOne({
-
-            user:req.user.id
-
+        const lockedBudgets = await LockedBudget.find({
+            user: req.user.id
         });
 
-
-
-        if(!lockedBudget){
-
+        if(!lockedBudgets || lockedBudgets.length === 0){
             return res.status(404).json({
-
                 message:"No locked budget found"
-
             });
-
         }
 
+        let remaining = amount;
 
+        // Collect all eligible releases across all locked budgets
+        let allReleases = [];
+        lockedBudgets.forEach(lb => {
+            lb.releases.forEach(release => {
+                const available = release.amount - (release.withdrawnAmount || 0);
+                if (release.released && available > 0) {
+                    allReleases.push({
+                        budget: lb,
+                        release: release,
+                        available: available,
+                        date: new Date(release.releaseDate)
+                    });
+                }
+            });
+        });
 
-        let remaining =
-        amount;
+        // Sort by due dates (oldest first)
+        allReleases.sort((a, b) => a.date - b.date);
 
+        const modifiedBudgets = new Set();
 
+        for (const item of allReleases) {
+            if (remaining <= 0) break;
 
-        for(const release of lockedBudget.releases){
-
-
-            const available =
-            release.amount -
-            release.withdrawnAmount;
-
-
-
-            if(
-                release.released &&
-                available > 0 &&
-                remaining > 0
-            ){
-
-                const deduction =
-                Math.min(
-                    available,
-                    remaining
-                );
-
-
-                release.withdrawnAmount += deduction;
-
-
-                remaining -= deduction;
-
-            }
-
+            const deduction = Math.min(item.available, remaining);
+            item.release.withdrawnAmount = (item.release.withdrawnAmount || 0) + deduction;
+            remaining -= deduction;
+            
+            modifiedBudgets.add(item.budget);
         }
-
-
 
         if(remaining > 0){
-
             return res.status(400).json({
-
-                message:
-                "Insufficient available balance"
-
+                message: "Insufficient available balance"
             });
-
         }
 
-
-
-        await lockedBudget.save();
+        for (const budget of modifiedBudgets) {
+            await budget.save();
+        }
 
 
 
@@ -162,67 +141,30 @@ exports.getBalance = async (req, res) => {
         require("../models/LockedBudget");
 
 
-        const lockedBudget =
-        await LockedBudget.findOne({
-
+        const lockedBudgets = await LockedBudget.find({
             user:req.user.id
-
         });
 
-
-
-        if(!lockedBudget){
-
-            return res.status(404).json({
-
-                message:
-                "No locked budget found"
-
-            });
-
-        }
-
-
-
         let lockedMoney = 0;
-
         let availableMoney = 0;
-
         let withdrawnMoney = 0;
 
+        if (lockedBudgets && lockedBudgets.length > 0) {
+            lockedBudgets.forEach(budget => {
+                budget.releases.forEach(release => {
+                    const remaining = release.amount - (release.withdrawnAmount || 0);
 
+                    if(release.released){
+                        availableMoney += remaining;
+                    }
+                    else{
+                        lockedMoney += release.amount;
+                    }
 
-        lockedBudget.releases.forEach(
-
-            release => {
-
-
-                const remaining =
-                release.amount -
-                release.withdrawnAmount;
-
-
-
-                if(release.released){
-
-                    availableMoney += remaining;
-
-                }
-
-                else{
-
-                    lockedMoney += release.amount;
-
-                }
-
-
-                withdrawnMoney +=
-                release.withdrawnAmount;
-
-
-            }
-
-        );
+                    withdrawnMoney += (release.withdrawnAmount || 0);
+                });
+            });
+        }
 
 
 
