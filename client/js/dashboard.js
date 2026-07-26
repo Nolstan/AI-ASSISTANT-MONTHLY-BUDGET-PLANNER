@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const lockedMoneyEl = document.getElementById('lockedMoney');
     const availableBalanceEl = document.getElementById('availableBalance');
     const allocationsTableBody = document.getElementById('allocationsTableBody');
+    const recentTransactionsTableBody = document.getElementById('recentTransactionsTableBody');
     const dashboardSubEl = document.getElementById('dashboardOverviewSub');
 
     // Utility: Format currency in MWK
@@ -21,10 +22,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        // Fetch budget data and account balance concurrently
-        const [budgetRes, balanceRes] = await Promise.allSettled([
+        // Fetch budget data, account balance, and transactions concurrently
+        const [budgetRes, balanceRes, transactionsRes] = await Promise.allSettled([
             fetchBudgets(),
-            fetchAccountBalance()
+            fetchAccountBalance(),
+            fetchTransactions()
         ]);
 
         let budgets = [];
@@ -37,9 +39,43 @@ document.addEventListener('DOMContentLoaded', async () => {
             balanceData = balanceRes.value;
         }
 
+        let transactions = [];
+        if (transactionsRes.status === 'fulfilled' && transactionsRes.value.transactions) {
+            transactions = transactionsRes.value.transactions;
+        }
+
         // Display locked money and available balance from balance API if available
         if (lockedMoneyEl) lockedMoneyEl.textContent = formatMWK(balanceData.lockedMoney || 0);
         if (availableBalanceEl) availableBalanceEl.textContent = formatMWK(balanceData.availableMoney || 0);
+
+        // Render Recent Transactions
+        if (recentTransactionsTableBody) {
+            if (!transactions || transactions.length === 0) {
+                recentTransactionsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--ink-soft); padding: 24px;">No recent transactions recorded.</td>
+                    </tr>
+                `;
+            } else {
+                const recent = transactions.slice(0, 5); // Take top 5 latest
+                recentTransactionsTableBody.innerHTML = recent.map(txn => {
+                    const dateObj = new Date(txn.createdAt || txn.date);
+                    const dateStr = dateObj.toLocaleDateString('en-CA'); // YYYY-MM-DD format
+                    const isDeposit = txn.type === 'DEPOSIT' || txn.type === 'INCOME';
+                    const amountPrefix = isDeposit ? '+' : '-';
+                    const colorStyle = isDeposit ? 'color: var(--green);' : 'color: var(--danger);';
+
+                    return `
+                        <tr>
+                            <td>${dateStr}</td>
+                            <td>${txn.description || '—'}</td>
+                            <td>${txn.category || '—'}</td>
+                            <td class="mono" style="${colorStyle}">${amountPrefix}${formatMWK(txn.amount)}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
 
         if (budgets.length === 0) {
             if (dashboardSubEl) dashboardSubEl.textContent = 'No budget created yet for this period.';
@@ -115,6 +151,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <tr>
                     <td colspan="5" style="text-align: center; color: var(--danger); padding: 24px;">
                         Unable to connect to server backend. Please ensure the server is running.
+                    </td>
+                </tr>
+            `;
+        }
+        if (recentTransactionsTableBody) {
+            recentTransactionsTableBody.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align: center; color: var(--danger); padding: 24px;">
+                        Unable to load transactions.
                     </td>
                 </tr>
             `;
