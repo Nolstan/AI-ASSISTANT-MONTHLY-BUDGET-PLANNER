@@ -33,29 +33,82 @@ document.addEventListener('DOMContentLoaded', async () => {
             showOnly(viewSection);
 
             const totalEl = document.getElementById('viewTotalLocked');
-            const tbody = document.getElementById('scheduleViewBody');
+            const container = document.getElementById('schedulesContainer');
 
-            if (totalEl) totalEl.textContent = formatMWK(data.lockedAmount);
+            if (totalEl) totalEl.textContent = formatMWK(data.totalLockedAmount);
+            if (!container) return;
 
-            if (!data.releases || data.releases.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--ink-soft);">No scheduled releases found.</td></tr>`;
+            if (!data.lockedBudgets || data.lockedBudgets.length === 0) {
+                container.innerHTML = `<div style="text-align:center;padding:20px;color:var(--ink-soft);">No scheduled releases found.</div>`;
                 return;
             }
 
-            tbody.innerHTML = data.releases.map(release => {
-                const date = release.releaseDate ? new Date(release.releaseDate).toLocaleDateString('en-GB') : '—';
-                const statusClass = release.released ? 'badge-released' : 'badge-pending';
-                const statusText = release.released ? 'Released' : 'Scheduled';
+            let html = '';
 
-                return `
-                    <tr>
-                        <td><strong>${release.category}</strong></td>
-                        <td class="mono">${formatMWK(release.amount)}</td>
-                        <td class="mono">${date}</td>
-                        <td><span class="badge ${statusClass}">${statusText}</span></td>
-                    </tr>
+            data.lockedBudgets.forEach((lb, i) => {
+                const budgetTitle = lb.budget?.monthlyAmount 
+                    ? `Budget (${formatMWK(lb.budget.monthlyAmount)})` 
+                    : `Budget Plan ${i + 1}`;
+                const dateStr = lb.createdAt ? new Date(lb.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : '';
+
+                html += `
+                    <div class="budget-block" style="background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); margin-bottom: 24px; overflow: hidden;">
+                        <div style="background: var(--paper-raised); padding: 16px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3 style="font-size: 1.1rem; margin: 0;">${budgetTitle}</h3>
+                                <div style="font-size: 0.85rem; color: var(--ink-soft); margin-top: 4px;">Created: ${dateStr}</div>
+                            </div>
+                            <div class="mono" style="color: var(--gold); font-weight: 600;">Locked: ${formatMWK(lb.lockedAmount)}</div>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--rule); font-size: 0.85rem; color: var(--ink-soft);">Category</th>
+                                    <th style="text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--rule); font-size: 0.85rem; color: var(--ink-soft);">Amount (MWK)</th>
+                                    <th style="text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--rule); font-size: 0.85rem; color: var(--ink-soft);">Withdrawal Date</th>
+                                    <th style="text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--rule); font-size: 0.85rem; color: var(--ink-soft);">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                 `;
-            }).join('');
+
+                if (lb.releases && lb.releases.length > 0) {
+                    html += lb.releases.map(release => {
+                        const date = release.releaseDate ? new Date(release.releaseDate).toLocaleDateString('en-GB') : '—';
+                        
+                        let statusClass = 'badge-pending';
+                        let statusText = 'Scheduled';
+                        if (release.released) {
+                            statusClass = 'badge-released';
+                            statusText = 'Released';
+                            const available = release.amount - (release.withdrawnAmount || 0);
+                            if (available <= 0) {
+                                statusClass = '';
+                                statusText = 'Withdrawn';
+                            }
+                        }
+
+                        return `
+                            <tr>
+                                <td style="padding: 12px 16px; border-bottom: 1px solid var(--rule);"><strong>${release.category}</strong></td>
+                                <td class="mono" style="padding: 12px 16px; border-bottom: 1px solid var(--rule);">${formatMWK(release.amount)}</td>
+                                <td class="mono" style="padding: 12px 16px; border-bottom: 1px solid var(--rule);">${date}</td>
+                                <td style="padding: 12px 16px; border-bottom: 1px solid var(--rule);"><span class="badge ${statusClass}">${statusText}</span></td>
+                            </tr>
+                        `;
+                    }).join('');
+                } else {
+                    html += `<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--ink-soft);">No schedule for this budget.</td></tr>`;
+                }
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
 
         } catch (err) {
             // No locked budget yet - check if we should offer setup
