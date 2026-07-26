@@ -2,72 +2,252 @@
 
 BudgetAI is a web application designed to help users take control of their personal finances through intelligent budget planning and automated time-locked savings. Instead of just tracking expenses, this app forces financial discipline by physically "locking" allocated funds until user-defined withdrawal dates.
 
+---
+
+## Problem Statement
+
+Managing personal finances is a challenge for many individuals because existing budgeting applications primarily monitor spending instead of preventing poor financial decisions. Users often create budgets with good intentions but end up spending money allocated for essential expenses such as rent, groceries, transport, bills, or savings before those expenses are due. This leads to overspending, missed financial goals, increased debt, and financial stress.
+
+Another challenge is creating a realistic monthly budget. Many people struggle to balance their income with their expenses and are unsure how much they should allocate to each spending category.
+
+---
+
+## Proposed Solution
+
+BudgetAI combines Artificial Intelligence with automated financial discipline to help users spend according to plan.
+
+Users begin by entering their monthly income and planned expenses. The integrated AI analyzes the proposed budget and generates a balanced recommendation that ensures income is allocated realistically across different categories.
+
+Once the user approves the AI-generated budget, each budget category is assigned a withdrawal date. The allocated funds are then locked by the system and remain inaccessible until their scheduled release date. An automated background scheduler releases funds only when they become available, helping users avoid impulsive spending while ensuring money is available when it is actually needed.
+
+By combining intelligent budgeting with controlled access to funds, BudgetAI helps users develop better financial habits, reduce unnecessary spending, and consistently achieve their financial goals.
+
+---
+
 ## Key Features
 
-- **AI Budget Optimization**: Submit a rough draft of your monthly income and planned expenses, and the built in AI  will analyze and return a balanced, recommended plan.
-- **Time-Locked Vaults**: Users can map specific withdrawal dates to approved budget categories. Funds are "locked" and cannot be withdrawn until the cron job releases them on the scheduled date.
-- **Multiple Budget Plans**: Support for running multiple concurrent budget plans with separate lock schedules.
-- **Transaction Auditing**: Full ledger tracking deposits, withdrawals, and locked assets.
-- **Dashboard Overview**: A central hub showing total allocated, currently locked and available (released) balances.
+- **AI Budget Optimization** – Submit a rough monthly budget and let AI generate a balanced spending plan.
+- **Time-Locked Vaults** – Allocate funds to budget categories and lock them until user-defined withdrawal dates.
+- **Multiple Budget Plans** – Manage multiple monthly budgets independently.
+- **Transaction Auditing** – Complete ledger of deposits, withdrawals, and locked funds.
+- **Dashboard Overview** – Monitor total allocated, locked, and available balances from a single dashboard.
+- **Secure Authentication** – User accounts protected using JWT authentication and password hashing.
+
+---
 
 ## Tech Stack
 
-- **Frontend**: HTML5, CSS3 (Vanilla), JavaScript
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB (Mongoose)
-- **AI Integration**: Groq API
-- **Task Scheduling**: `node-cron` for automated midnight fund releases
-- **Authentication**: JWT & bcryptjs
+### Frontend
+- HTML5
+- CSS3 (Vanilla)
+- JavaScript
+
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- MongoDB
+- Mongoose
+
+### AI Integration
+- Groq API
+
+### Background Processing
+- node-cron
+
+### Authentication
+- JWT
+- bcryptjs
+
+---
 
 ## Prerequisites
 
-- Node.js (v18+ recommended)
-- MongoDB running locally or a MongoDB Atlas connection string
-- A groq API Key
+Before running the project, ensure you have:
 
-## Installation & Setup
+- Node.js (v18 or later)
+- MongoDB (Local or MongoDB Atlas)
+- A Groq API Key
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Nolstan/AI-ASSISTANT-MONTHLY-BUDGET-PLANNER.git
-   cd AI-ASSISTANT-MONTHLY-BUDGET-PLANNER
-   ```
+---
 
-2. **Install backend dependencies**
-   Navigate to the server directory and install packages:
-   ```bash
-   cd server
-   npm install
-   ```
+# Installation & Setup
 
-3. **Configure Environment Variables**
-   Create a `.env` file inside the `server` directory and add the following:
-   ```env
-   PORT=5000
-   MONGO_URI=mongodb://localhost:27017/budgetai or your Atlas URI
-   JWT_SECRET=your_jwt_secret_key_here
-   GROQ_API_KEY=your_groq_api_key_here
-   ```
+## 1. Clone the Repository
 
-4. **Start the backend server**
-   ```bash
-   npm run dev
-   ```
-   The server will start on `http://localhost:5000`. The automated cron job for releasing locked funds runs nightly at midnight.
+```bash
+git clone https://github.com/Nolstan/AI-ASSISTANT-MONTHLY-BUDGET-PLANNER.git
 
-5. **Run the frontend**
-   The frontend is purely static HTML/JS/CSS. You can serve it using any local server (e.g., Live Server extension in VS Code, or `python -m http.server`) directly from the `client` folder.
-   ```bash
-   cd ../client
-   # Example using Python:
-   python3 -m http.server 3000
-   ```
-   Navigate to `http://localhost:3000` to view the app.
+cd AI-ASSISTANT-MONTHLY-BUDGET-PLANNER
+```
 
-## Project Workflow
+---
 
-1. **Create Budget**: User inputs their total monthly income and a list of expected expenses.
-2. **AI Review**: The backend sends the draft to Groq API, which returns a structured JSON recommendation ensuring the math balances perfectly.
-3. **Approval**: User reviews the AIs suggestions, makes manual tweaks if necessary and approves the final plan.
-4. **Schedule & Lock**: User assigns a withdrawal date to every category in the plan. The budget is then converted into a `LockedBudget` document.
-5. **Release & Withdraw**: The background cron job unlocks money on the specified dates. Users can then withdraw the available funds, which gets logged in the transaction history.
+## 2. Install Backend Dependencies
+
+Navigate into the server folder.
+
+```bash
+cd server
+
+npm install
+```
+
+---
+
+## 3. Configure Environment Variables
+
+Create a `.env` file inside the `server` directory.
+
+```env
+PORT=5000
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_jwt_secret
+
+GROQ_API_KEY=your_groq_api_key
+```
+
+---
+
+## 4. Start the Backend
+
+```bash
+npm run dev
+```
+
+The backend will start at:
+
+```
+http://localhost:5000
+```
+
+A background cron job automatically checks every midnight for funds whose release dates have arrived.
+
+---
+
+## 5. Run the Frontend
+
+The frontend consists of static HTML, CSS, and JavaScript files.
+
+Navigate to the client folder:
+
+```bash
+cd ../client
+```
+
+Serve it using Live Server or Python:
+
+```bash
+python3 -m http.server 3000
+```
+
+Open:
+
+```
+http://localhost:3000
+```
+
+---
+
+# Project Workflow
+
+### Step 1 — Create Budget
+
+The user enters:
+
+- Monthly income
+- Expected expenses
+
+---
+
+### Step 2 — AI Budget Review
+
+The backend sends the budget to the Groq AI model.
+
+The AI:
+
+- validates calculations
+- balances expenses
+- recommends improvements
+- ensures allocations match available income
+
+---
+
+### Step 3 — User Approval
+
+The user reviews the AI recommendations.
+
+They may:
+
+- accept the recommendations
+- modify allocations
+- finalize the budget
+
+---
+
+### Step 4 — Schedule & Lock Funds
+
+Each budget category receives a withdrawal date.
+
+Examples:
+
+- Rent → 1st
+- Groceries → Every Friday
+- Transport → Every Monday
+
+The system locks those allocations inside the user's budget vault.
+
+---
+
+### Step 5 — Automatic Release
+
+A scheduled background task checks daily for categories whose release dates have arrived.
+
+Eligible funds become available for withdrawal.
+
+Every transaction is recorded for accountability and auditing.
+
+---
+
+# Why BudgetAI?
+
+Unlike traditional budgeting applications that only monitor spending, BudgetAI actively helps users stick to their financial plans by preventing early access to allocated funds.
+
+The combination of AI-powered budget planning and time-locked budgeting encourages financial discipline rather than simply tracking spending after it has already occurred.
+
+---
+
+# Future Improvements
+
+- Mobile application (React Native)
+- Mobile Money integration
+- Bank integration
+- SMS and email reminders
+- Spending analytics and visual reports
+- Savings goal tracking
+- AI-powered financial insights
+- Investment recommendations
+
+---
+
+# Team PIRATES
+
+| Name | Role |
+|------|------|
+| Laston Kumwenda | Programmer |
+| Pauline Malonda | Designer |
+| Tom Gwetsa | Coordinator |
+| Saidat Uwiycheza | Designer |
+| Ulunji Ndalahoma | Researcher |
+
+---
+
+# Demo
+
+https://drive.google.com/drive/folders/1ZOptLgchKx66BO8FT2qOyRnLzE-7FX5b
+
+---
+
