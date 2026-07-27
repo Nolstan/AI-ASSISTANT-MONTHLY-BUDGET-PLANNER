@@ -8,7 +8,7 @@ const groq = require("../config/groq");
 //  Generate an AI budget recommendation.
 
 exports.generateBudgetPlan = async (budget) => {
-
+    try {
     // Convert expense list into readable text
     const expenseList = budget.expenses //from budget model
         .map(
@@ -103,77 +103,99 @@ Format:
             console.log("RAW AI RESPONSE FOR DEBUGGING");
             console.log(content);
 
-       // Convert JSON string into JavaScript object
-const aiPlan = JSON.parse(content);
+        let aiPlan;
+        try {
+            aiPlan = JSON.parse(content);
+            if (!aiPlan || typeof aiPlan !== 'object') {
+                throw new Error("AI output is not a JSON object");
+            }
+        } catch (error) {
+            console.error("Failed to parse AI response:", error);
+            // Fallback plan based on user's exact input
+            aiPlan = {
+                summary: "AI analysis was unavailable. We created a direct budget plan based on your inputs.",
+                improvements: ["Try generating the AI plan again later."],
+                recommendedBudget: budget.expenses.map(exp => ({
+                    name: exp.name,
+                    amount: exp.amount,
+                    priority: exp.priority
+                })),
+                tips: []
+            };
+        }
 
+        // Ensure recommendedBudget is an array
+        if (!Array.isArray(aiPlan.recommendedBudget)) {
+            aiPlan.recommendedBudget = [];
+        }
 
-// Normalize priority string helper
-function normalizePriority(val) {
-    if (!val) return "Important";
-    const str = String(val).trim().toLowerCase();
-    if (str.includes("essent") || str.includes("high") || str.includes("critical") || str.includes("top")) return "Essential";
-    if (str.includes("option") || str.includes("low") || str.includes("sec") || str.includes("discretion")) return "Optional";
-    return "Important";
-}
+        // Normalize priority string helper
+        function normalizePriority(val) {
+            if (!val) return "Important";
+            const str = String(val).trim().toLowerCase();
+            if (str.includes("essent") || str.includes("high") || str.includes("critical") || str.includes("top")) return "Essential";
+            if (str.includes("option") || str.includes("low") || str.includes("sec") || str.includes("discretion")) return "Optional";
+            return "Important";
+        }
 
-// Sanitize AI priority outputs
-if (Array.isArray(aiPlan.recommendedBudget)) {
-    aiPlan.recommendedBudget = aiPlan.recommendedBudget.map(item => ({
-        ...item,
-        priority: normalizePriority(item.priority)
-    }));
-}
+        // Sanitize AI priority outputs and ensure amounts are numbers
+        aiPlan.recommendedBudget = aiPlan.recommendedBudget.map(item => ({
+            name: item.name || "Unknown",
+            amount: Number(item.amount) || 0,
+            priority: normalizePriority(item.priority)
+        }));
 
+        // Validate and automatically correct AI budget totals
+        let total = aiPlan.recommendedBudget.reduce(
+            (sum, item) => sum + item.amount,
+            0
+        );
 
-// Validate and automatically correct AI budget totals
+        // Calculate difference between required budget and AI budget
+        let difference = budget.monthlyAmount - total;
 
+        // If AI did not allocate the full budget
+        if (difference !== 0) {
+            
+            // If AI over-allocated (difference < 0), let's fallback to original expenses to be safe
+            // or just scale down. For simplicity, if it's over budget or severely under, 
+            // fallback to user's original if it's negative to avoid negative savings.
+            if (difference < 0) {
+                console.warn("AI over-allocated budget. Falling back to original expenses.");
+                aiPlan.recommendedBudget = budget.expenses.map(exp => ({
+                    name: exp.name,
+                    amount: exp.amount,
+                    priority: exp.priority
+                }));
+                // Recalculate difference for the fallback
+                total = aiPlan.recommendedBudget.reduce((sum, item) => sum + item.amount, 0);
+                difference = budget.monthlyAmount - total;
+            }
 
-const total = aiPlan.recommendedBudget.reduce(
-    (sum, item) => sum + item.amount,
-    0
-);
+            if (difference > 0) {
+                // Find savings category
+                let savings = aiPlan.recommendedBudget.find(
+                    item => item.name.toLowerCase() === "savings"
+                );
 
+                if (savings) {
+                    // Add remaining money to savings
+                    savings.amount += difference;
+                } else {
+                    // If AI forgot savings completely, create a savings category
+                    aiPlan.recommendedBudget.push({
+                        name: "Savings",
+                        amount: difference,
+                        priority: "Important"
+                    });
+                }
+            }
+        }
 
-// Calculate difference between required budget and AI budget
-const difference = budget.monthlyAmount - total;
-
-
-// If AI did not allocate the full budget
-if (difference !== 0) {
-
-
-    // Find savings category
-    const savings = aiPlan.recommendedBudget.find(
-        item =>
-            item.name.toLowerCase() === "savings"
-    );
-
-
-    if (savings) {
-
-        // Add remaining money to savings
-        savings.amount += difference;
-
-    } else {
-
-        // If AI forgot savings completely,
-        // create a savings category
-        aiPlan.recommendedBudget.push({
-
-            name: "Savings",
-
-            amount: difference,
-
-            priority: "Important"
-
-        });
-
+        // Return corrected AI plan
+        return aiPlan;
+    } catch (error) {
+        console.error("AI Service Error:", error);
+        throw error;
     }
-
-}
-
-
-// Return corrected AI plan
-return aiPlan;
-
-        };
+};
