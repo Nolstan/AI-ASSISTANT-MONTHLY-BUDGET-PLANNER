@@ -22,11 +22,11 @@ async function request(endpoint, options = {}) {
     let response;
     try {
         response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            ...options,
             headers: {
                 'Content-Type': 'application/json',
                 ...options.headers
-            },
-            ...options
+            }
         });
     } catch (err) {
         throw new Error('Unable to connect to backend server. Make sure your server is running on http://localhost:5000');
