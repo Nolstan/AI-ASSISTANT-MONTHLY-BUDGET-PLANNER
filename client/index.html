@@ -1,437 +1,171 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BudgetAI — Your money, laid out plainly</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/navbar.css">
-
-<style>
-  :root{
-    --paper: #EFEDE3;
-    --paper-raised: #F7F5EC;
-    --ink: #1F2A22;
-    --ink-soft: #4B5A50;
-    --rule: #D6D0BC;
-    --green: #2F6F4E;
-    --green-dark: #244F39;
-    --gold: #B8912B;
-    --radius: 4px;
-  }
-
-  *{ box-sizing: border-box; }
-  html{ scroll-behavior: smooth; }
-
-  body{
-    margin:0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'IBM Plex Sans', sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  h1, h2, h3, .display{
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-
-  .mono{ font-family: 'IBM Plex Mono', monospace; }
-
-  a{ color: inherit; text-decoration: none; }
-
-  .container{
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 0 28px;
-  }
-
-  /* ---------- Nav ---------- */
-  .nav{
-    border-bottom: 1px solid var(--rule);
-    background: var(--paper);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .nav .container{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    height: 72px;
-  }
-  .brand{
-    font-family:'Fraunces', serif;
-    font-weight: 600;
-    font-size: 1.25rem;
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  .brand-mark{
-    width: 26px; height: 26px;
-    border: 1.5px solid var(--ink);
-    border-radius: 50%;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 13px;
-    font-weight: 600;
-  }
-  .nav-links{
-    display:flex;
-    align-items:center;
-    gap: 28px;
-  }
-  .nav-links a.login{
-    font-size: 0.95rem;
-    color: var(--ink-soft);
-    border-bottom: 1px solid transparent;
-  }
-  .nav-links a.login:hover{ border-bottom-color: var(--ink-soft); }
-
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding: 12px 22px;
-    border-radius: var(--radius);
-    font-weight: 500;
-    font-size: 0.95rem;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: transform .15s ease, background .15s ease, border-color .15s ease;
-  }
-  .btn-primary{
-    background: var(--green);
-    color: var(--paper-raised);
-  }
-  .btn-primary:hover{ background: var(--green-dark); transform: translateY(-1px); }
-  .btn-outline{
-    background: transparent;
-    border-color: var(--ink);
-    color: var(--ink);
-  }
-  .btn-outline:hover{ background: var(--ink); color: var(--paper-raised); }
-
-  /* ---------- Hero ---------- */
-  .hero{
-    padding: 88px 0 72px;
-  }
-  .hero .grid{
-    display:grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 64px;
-    align-items: center;
-  }
-  .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--green-dark);
-    display:flex;
-    align-items:center;
-    gap: 10px;
-    margin-bottom: 22px;
-  }
-  .eyebrow::before{
-    content:"";
-    width: 28px; height: 1px;
-    background: var(--green-dark);
-  }
-  .hero h1{
-    font-size: clamp(2.3rem, 4vw, 3.4rem);
-    line-height: 1.08;
-  }
-  .hero h1 em{
-    font-style: italic;
-    color: var(--green);
-  }
-  .hero p.lead{
-    margin-top: 22px;
-    font-size: 1.08rem;
-    line-height: 1.6;
-    color: var(--ink-soft);
-    max-width: 46ch;
-  }
-  .hero-cta{
-    margin-top: 34px;
-    display:flex;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  /* ---------- Chat mockup (signature element) ---------- */
-  .chat-card{
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    padding: 26px 24px;
-    box-shadow: 0 1px 0 var(--rule), 0 24px 48px -32px rgba(31,42,34,0.35);
-  }
-  .chat-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom: 20px;
-  }
-  .chat-head h3{ font-size: 1.05rem; }
-  .chat-head span{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--ink-soft);
-    display:flex;
-    align-items:center;
-    gap: 6px;
-  }
-  .chat-head span::before{
-    content:"";
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-  }
-  .bubble{
-    max-width: 84%;
-    padding: 12px 16px;
-    border-radius: 14px;
-    font-size: 0.94rem;
-    line-height: 1.5;
-    margin-bottom: 14px;
-  }
-  .bubble.user{
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    border-bottom-right-radius: 4px;
-    margin-left: auto;
-    color: var(--ink);
-  }
-  .bubble.ai{
-    background: var(--green-dark);
-    color: var(--paper-raised);
-    border-bottom-left-radius: 4px;
-  }
-  .bubble.ai .amt{
-    font-family:'IBM Plex Mono', monospace;
-    font-weight: 500;
-  }
-  .chat-input{
-    margin-top: 6px;
-    display:flex;
-    align-items:center;
-    gap: 10px;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    padding: 8px 8px 8px 16px;
-    background: var(--paper);
-  }
-  .chat-input span{
-    flex:1;
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-  }
-  .chat-input .send{
-    width: 30px; height: 30px;
-    border-radius: 50%;
-    background: var(--green);
-    color: var(--paper-raised);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-  }
-
-  /* ---------- Features ---------- */
-  .features{
-    border-top: 1px solid var(--rule);
-    padding: 76px 0;
-  }
-  .section-head{
-    max-width: 56ch;
-    margin-bottom: 48px;
-  }
-  .section-head .eyebrow{ margin-bottom: 14px; }
-  .section-head h2{
-    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
-  }
-  .feature-grid{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .feature{
-    background: var(--paper-raised);
-    padding: 32px 28px;
-  }
-  .feature .num{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--green);
-    margin-bottom: 16px;
-    display: block;
-  }
-  .feature h4{
-    font-family:'Fraunces', serif;
-    font-weight: 500;
-    font-size: 1.15rem;
-    margin-bottom: 10px;
-  }
-  .feature p{
-    color: var(--ink-soft);
-    font-size: 0.92rem;
-    line-height: 1.55;
-    margin: 0;
-  }
-
-  /* ---------- Footer ---------- */
-  footer{
-    border-top: 1px solid var(--rule);
-    padding: 28px 0;
-  }
-  footer .container{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  footer p{
-    margin:0;
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-  }
-  footer .foot-links{
-    display:flex;
-    gap: 20px;
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-  }
-  footer .foot-links a:hover{ color: var(--ink); }
-
-  @media (max-width: 860px){
-    .hero .grid{ grid-template-columns: 1fr; gap: 44px; }
-    .feature-grid{ grid-template-columns: 1fr; }
-    .nav-links{ gap: 14px; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *{ transition: none !important; }
-  }
-
-  :focus-visible{
-    outline: 2px solid var(--green);
-    outline-offset: 2px;
-  }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f150f">
+  <meta name="description" content="Build a monthly budget around real life. Review your plan, choose category release dates, and keep your spending on schedule with BudgetAI.">
+  <title>BudgetAI — A little more freedom. Every month.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.48.0/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <script src="js/landing.js" defer></script>
 </head>
-
 <body>
+  <div class="page-shell" id="top">
+    <header class="site-header">
+      <div class="site-wrap header-inner">
+        <a class="brand" href="#top" aria-label="BudgetAI home">BudgetAI<span aria-hidden="true">.</span></a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="#how-it-works">How it works</a>
+          <a href="#difference">The difference</a>
+          <a href="login.html">Log in</a>
+        </nav>
+        <div class="mobile-actions">
+          <a class="mobile-login" href="login.html">Log in</a>
+          <a class="mobile-join" href="register.html">Join</a>
+        </div>
+      </div>
+    </header>
 
-<nav class="nav">
-  <div class="container">
-    <a class="brand" href="#top">
-      <span class="brand-mark">B</span>
-      BudgetAI
-    </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <div class="nav-links" id="navMenu">
-      <a class="login" href="login.html">Log in</a>
-      <a class="btn btn-primary" href="register.html">Get started</a>
-    </div>
+    <main>
+      <section class="hero site-wrap" aria-labelledby="hero-title">
+        <article class="hero-art-card" data-motion-tilt>
+          <p class="eyebrow eyebrow-dark">Less stress. More life.</p>
+          <div class="hero-illustration">
+            <img src="images/budgetai-hero-illustration.svg" alt="A joyful woman raises her arms in celebration against a soft pink background." width="900" height="600" fetchpriority="high" data-motion-layer>
+          </div>
+          <h2 class="hero-art-caption">A little more freedom. Every month.</h2>
+        </article>
+
+        <div class="hero-copy">
+          <p class="eyebrow eyebrow-lime">Monthly budget planning. Human peace of mind.</p>
+          <h1 class="hero-title" id="hero-title">Make your money last. Not your worries.</h1>
+          <p class="hero-description">Meet BudgetAI: a monthly budget planner that gives every kwacha a purpose—and every expense its moment.</p>
+          <div class="hero-actions">
+            <a class="button button-lime" href="register.html">Create your plan <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="#how-it-works">See how it works</a>
+          </div>
+          <p class="hero-note">A calmer month starts with a plan.</p>
+        </div>
+      </section>
+
+      <section class="budget-showcase site-wrap" aria-labelledby="budget-preview-title">
+        <div class="budget-flow" data-budget-flow>
+          <div class="budget-panel" data-budget-panel data-reveal>
+            <div class="allocation-column">
+              <p class="eyebrow eyebrow-dark">Your October, under control</p>
+              <h2 class="budget-total" id="budget-preview-title"><span class="sr-only">MWK 500,000</span><span aria-hidden="true" data-count-target="500000" data-count-prefix="MWK ">MWK 500,000</span></h2>
+              <div class="allocation-summary">
+                <div class="allocation-chart" role="img" aria-label="Illustrative budget allocation: essentials 40 percent, living 25 percent, savings 20 percent, and flexible 15 percent.">
+                  <svg class="allocation-ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                    <g transform="rotate(-90 50 50)">
+                      <circle cx="50" cy="50" r="42" pathLength="100" stroke="var(--color-ink)" stroke-dasharray="40 60" stroke-dashoffset="0" style="--ring-length: 40; --ring-offset: 0; --ring-delay: 0ms;"></circle>
+                      <circle cx="50" cy="50" r="42" pathLength="100" stroke="var(--color-chart-living)" stroke-dasharray="25 75" stroke-dashoffset="-40" style="--ring-length: 25; --ring-offset: -40; --ring-delay: 100ms;"></circle>
+                      <circle cx="50" cy="50" r="42" pathLength="100" stroke="var(--color-chart-savings)" stroke-dasharray="20 80" stroke-dashoffset="-65" style="--ring-length: 20; --ring-offset: -65; --ring-delay: 200ms;"></circle>
+                      <circle cx="50" cy="50" r="42" pathLength="100" stroke="var(--color-chart-flexible)" stroke-dasharray="15 85" stroke-dashoffset="-85" style="--ring-length: 15; --ring-offset: -85; --ring-delay: 300ms;"></circle>
+                    </g>
+                  </svg>
+                  <div class="allocation-chart-center"><strong><span class="sr-only">100%</span><span aria-hidden="true" data-count-target="100" data-count-suffix="%">100%</span></strong><span>put to purpose</span></div>
+                </div>
+                <ul class="allocation-legend" aria-label="Illustrative monthly allocations">
+                  <li><strong>Essentials</strong><span>40%</span></li>
+                  <li><span>Living</span><span>25%</span></li>
+                  <li><span>Savings</span><span>20%</span></li>
+                  <li><span>Flexible</span><span>15%</span></li>
+                </ul>
+              </div>
+              <p class="budget-note"><span aria-hidden="true">✳</span>A little room for today. A little more for tomorrow. Your savings allocation is built in.</p>
+            </div>
+
+            <div class="schedule-card" aria-label="Illustrative category release schedule" data-reveal>
+              <div class="schedule-heading">
+                <h3>On your schedule.</h3>
+                <i class="ti ti-lock" aria-hidden="true"></i>
+              </div>
+              <div class="schedule-row schedule-row-released"><span class="date-label">01 OCT</span><span>Rent &amp; bills</span><span class="state-label">Released</span></div>
+              <div class="schedule-next">
+                <p class="eyebrow eyebrow-lime">Next release <span aria-hidden="true">/</span> 08 Oct</p>
+                <p class="schedule-amount">MWK 45,000</p>
+                <p class="schedule-category">Groceries &amp; everyday essentials</p>
+              </div>
+              <p class="schedule-row-future"><span>15 OCT</span><span aria-hidden="true">·</span><span>Transport &amp; living</span></p>
+            </div>
+          </div>
+        </div>
+        <p class="showcase-caption">Illustrative product preview · Amounts in Malawian kwacha</p>
+      </section>
+
+      <section class="workflow-section" id="how-it-works" aria-labelledby="workflow-title">
+        <div class="site-wrap workflow-inner">
+          <p class="eyebrow eyebrow-dark">01 / From payday to every day</p>
+          <h2 class="section-title workflow-title" id="workflow-title">A good budget doesn’t just add up. It keeps up.</h2>
+          <div class="workflow-grid">
+            <article class="workflow-step" data-reveal>
+              <p class="step-number">01</p>
+              <h3>Start with your reality.</h3>
+              <p>Add your monthly income and expenses. Mark what’s essential, important, or optional. No perfect habits required.</p>
+            </article>
+            <article class="workflow-step" data-reveal>
+              <p class="step-number">02</p>
+              <h3>Let the numbers find balance.</h3>
+              <p>Get a balanced monthly suggestion, then adjust it until the plan feels like yours.</p>
+            </article>
+            <article class="workflow-step" data-reveal>
+              <p class="step-number">03</p>
+              <h3>Give the month a rhythm.</h3>
+              <p>Approve your budget, set withdrawal dates, and see what’s available now versus what’s planned for later.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="features site-wrap" id="difference" aria-labelledby="features-title">
+        <p class="eyebrow eyebrow-lime">02 / Less friction. More intention.</p>
+        <h2 class="section-title features-title" id="features-title">Your money. Your rules. A little guidance.</h2>
+        <div class="feature-grid">
+          <article class="feature-card" data-reveal>
+            <i class="ti ti-sparkles feature-icon" aria-hidden="true"></i>
+            <h3>Guidance, not guesswork.</h3>
+            <p>Budget suggestions start with your monthly income and expenses. You review every amount before approving the plan.</p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <i class="ti ti-calendar-event feature-icon" aria-hidden="true"></i>
+            <h3>Not all at once. Right on time.</h3>
+            <p>Choose withdrawal dates around your expenses. Each allocated category stays unavailable in the app until its scheduled date.</p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <i class="ti ti-wallet feature-icon" aria-hidden="true"></i>
+            <h3>The full picture. In one place.</h3>
+            <p>See what’s allocated, locked, and available. Keep your budget and transaction history easy to follow.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="closing-section" aria-labelledby="closing-title">
+        <div class="closing-inner">
+          <p class="eyebrow eyebrow-muted">For people with plans. And real life.</p>
+          <h2 class="closing-title" id="closing-title">Less month-end panic. More breathing room.</h2>
+          <p class="closing-description">From the first bill to the last grocery run, turn one monthly amount into a plan you can actually live with.</p>
+          <a class="button button-lime" href="register.html">Create your plan <span aria-hidden="true">→</span></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-wrap footer-inner">
+        <a class="brand footer-brand" href="#top" aria-label="BudgetAI home">BudgetAI<span aria-hidden="true">.</span></a>
+        <p class="footer-tagline">A monthly plan for real life.</p>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="#how-it-works">How it works</a>
+          <a href="#difference">The difference</a>
+          <a href="login.html">Log in</a>
+          <a href="register.html">Create your plan</a>
+        </nav>
+      </div>
+    </footer>
   </div>
-</nav>
-
-<section class="hero" id="top">
-  <div class="container grid">
-
-    <div>
-      <p class="eyebrow">AI-assisted budgeting</p>
-      <h1>A monthly plan that <em>actually</em> fits how you spend</h1>
-      <p class="lead">
-        Tell BudgetAI your income and goals. It builds a realistic monthly
-        plan, tracks what you spend against it, and lets you release money
-        on your own schedule no spreadsheets required.
-      </p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="register.html">Create your plan</a>
-        <a class="btn btn-outline" href="login.html">Log in</a>
-      </div>
-    </div>
-
-    <div class="chat-card">
-      <div class="chat-head">
-        <h3>Ask BudgetAI</h3>
-        <span>Live</span>
-      </div>
-
-      <div class="bubble user">I want to save MWK 500,000 this month</div>
-      <div class="bubble ai">
-        Cut dining out by <span class="amt">MWK 80,000</span> and shift
-        <span class="amt">MWK 420,000</span> from your buffer you'll hit
-        <span class="amt">MWK 500,000</span> saved by day 3.
-      </div>
-
-      <div class="chat-input">
-        <span>Ask about a bill, a goal, or next month...</span>
-        <div class="send">&rarr;</div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="features">
-  <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">How it works</p>
-      <h2>Three things it handles so you don't have to</h2>
-    </div>
-
-    <div class="feature-grid">
-      <div class="feature">
-        <span class="num">01</span>
-        <h4>Plans that match reality</h4>
-        <p>Budgets are generated from your actual spending history, not a generic template — so the numbers hold up past week one.</p>
-      </div>
-      <div class="feature">
-        <span class="num">02</span>
-        <h4>Money on your terms</h4>
-        <p>Lock categories and decide exactly when funds become available, so spending stays intentional instead of automatic.</p>
-      </div>
-      <div class="feature">
-        <span class="num">03</span>
-        <h4>Insight, not just tracking</h4>
-        <p>See where a plan is slipping early, with plain explanations of why — not just a chart to interpret yourself.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <p>BudgetAI © 2026</p>
-    <div class="foot-links">
-      <a href="#top">Back to top</a>
-      <a href="login.html">Log in</a>
-      <a href="register.html">Get started</a>
-    </div>
-  </div>
-</footer>
-
-<script src="js/navbar.js"></script>
 </body>
 </html>
